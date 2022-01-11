@@ -1,8 +1,14 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../api";
+import {
+  getDetail,
+  getMovies,
+  IGetMoviesDetail,
+  IGetMoviesResult,
+} from "../api";
 import { makeImagePath } from "../utils";
 
 const Wrapper = styled.div`
@@ -16,14 +22,14 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ bgImg: string }>`
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.bgImg});
   background-size: cover;
   color: white;
 `;
@@ -94,6 +100,26 @@ const Info = styled(motion.div)`
   }
 `;
 
+const Overlay = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+`;
+
+const BoxDetail = styled(motion.div)<{ bgImg: string }>`
+  width: 50%;
+  height: 50vh;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-image: url(${(props) => props.bgImg});
+  background-size: cover;
+  background-position: center;
+`;
+
 const rowVars = {
   hidden: {
     x: window.outerWidth + 10,
@@ -134,32 +160,49 @@ const infoVars = {
 };
 
 const Home = () => {
-  const { isLoading, data } = useQuery<IGetMoviesResult>("hi", getMovies);
+  const { movieId } = useParams();
+  const navigate = useNavigate();
+  const movieMatch = useMatch(`/movies/:movieId`);
+  const { scrollY } = useViewportScroll();
+  const { isLoading: infoLoading, data: info } = useQuery<IGetMoviesResult>(
+    "nowPlaying",
+    getMovies
+  );
+  const { isLoading: detailLoading, data: detail } = useQuery<IGetMoviesDetail>(
+    ["Detail", movieId],
+    () => getDetail(movieId)
+  );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   let sliceF = 6;
   const incraseIndex = () => {
-    if (data) {
+    if (info) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data?.results.length - 1;
+      const totalMovies = info?.results.length - 1;
       const sliderPrev = Math.floor(totalMovies / sliceF) - 1;
       setIndex((prev) => (prev === sliderPrev ? 0 : prev + 1));
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const onClickBox = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+  };
+  const onClickOverlay = () => {
+    navigate("/");
+  };
   return (
     <Wrapper>
-      {isLoading ? (
+      {infoLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Banner
             onClick={incraseIndex}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+            bgImg={makeImagePath(info?.results[0].backdrop_path || "")}
           >
-            <Title>{data?.results[0].title}</Title>
-            <Overview>{data?.results[0].overview}</Overview>
+            <Title>{info?.results[0].title}</Title>
+            <Overview>{info?.results[0].overview}</Overview>
             <PlayBtn>
               <span>&gt; 재생</span>
             </PlayBtn>
@@ -174,20 +217,22 @@ const Home = () => {
                 transition={{ type: "tween", duration: 1 }}
                 key={index}
               >
-                {data?.results
+                {info?.results
                   ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
-                  .map((i) => {
+                  .map((movie) => {
                     return (
                       <Box
-                        key={i.id}
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        onClick={() => onClickBox(movie.id)}
                         whileHover="hover"
                         initial="normal"
                         variants={boxVars}
                         transition={{ type: "tween" }}
-                        bgImg={makeImagePath(i.backdrop_path || "")}
+                        bgImg={makeImagePath(movie.backdrop_path || "")}
                       >
                         <Info variants={infoVars}>
-                          <h4>{i.title}</h4>
+                          <h4>{movie.title}</h4>
                         </Info>
                       </Box>
                     );
@@ -195,8 +240,21 @@ const Home = () => {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {movieMatch || detailLoading ? (
+              <>
+                <Overlay onClick={onClickOverlay} />
+                <BoxDetail
+                  bgImg={makeImagePath(detail?.backdrop_path || "")}
+                  layoutId={movieMatch?.params.movieId}
+                  style={{ top: scrollY.get() + 100 }}
+                ></BoxDetail>
+              </>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
+      <Outlet />
     </Wrapper>
   );
 };
