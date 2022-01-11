@@ -65,15 +65,33 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)`
-  width: inherit;
+const Box = styled(motion.div)<{ bgImg: string }>`
+  background-color: white;
+  background-image: url(${(props) => props.bgImg});
+  background-size: cover;
+  background-position: center center;
   height: 200px;
   font-size: 66px;
+  position: relative;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
-const Img = styled(motion.img)`
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
   width: 100%;
-  height: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 18px;
+  }
 `;
 
 const rowVars = {
@@ -88,20 +106,37 @@ const rowVars = {
   },
 };
 
-const Overlay = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const boxVars = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    zIndex: 99,
+    scale: 1.3,
+    y: -80,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
+
+const infoVars = {
+  hover: {
+    opacity: 1,
+    transition: {
+      delay: 0.5,
+      duaration: 0.1,
+      type: "tween",
+    },
+  },
+};
 
 const Home = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("hi", getMovies);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  console.log(selectedId);
   let sliceF = 6;
   const incraseIndex = () => {
     if (data) {
@@ -143,34 +178,23 @@ const Home = () => {
                   ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
                   .map((i) => {
                     return (
-                      <Box key={i.id}>
-                        <Img
-                          onClick={() => setSelectedId(i.id)}
-                          layoutId={i.id}
-                          whileHover={{ scale: 1.1, borderRadius: "5px" }}
-                          alt=""
-                          src={makeImagePath(i.backdrop_path || "")}
-                        />
+                      <Box
+                        key={i.id}
+                        whileHover="hover"
+                        initial="normal"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        bgImg={makeImagePath(i.backdrop_path || "")}
+                      >
+                        <Info variants={infoVars}>
+                          <h4>{i.title}</h4>
+                        </Info>
                       </Box>
                     );
                   })}
               </Row>
             </AnimatePresence>
           </Slider>
-          <AnimatePresence>
-            {selectedId && (
-              <Overlay layoutId={selectedId}>
-                <Box key={selectedId}>
-                  <Img
-                    layoutId={selectedId}
-                    whileHover={{ scale: 1.1, borderRadius: "5px" }}
-                    alt=""
-                    src={makeImagePath(selectedId || "")}
-                  />
-                </Box>
-              </Overlay>
-            )}
-          </AnimatePresence>
         </>
       )}
     </Wrapper>
