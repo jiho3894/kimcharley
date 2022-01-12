@@ -274,9 +274,7 @@ const Home = () => {
           ) : (
             <Fucking>
               <ReactPlayer
-                url={`https://www.youtube.com/embed/${
-                  trailer?.results[0]?.key ? "NbXCoYTC1Lk" : null
-                }`}
+                url={`https://www.youtube.com/embed/${trailer?.results[0]?.key}`}
                 controls={false}
                 playing={true}
                 muted={sound ? true : false}
