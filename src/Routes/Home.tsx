@@ -222,6 +222,7 @@ const Home = () => {
     "nowPlaying",
     getMovies
   );
+  
   const { isLoading: trailerLoading, data: trailer } =
     useQuery<IGetMoviesTrailer>("trailer", () => getTrailer(state.id));
   const [index, setIndex] = useState(0);
