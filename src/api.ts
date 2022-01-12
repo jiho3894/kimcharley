@@ -9,6 +9,16 @@ interface IMovie {
   overview: string;
 }
 
+interface ITrailer {
+  key: string;
+}
+
+export interface RouterID {
+  state: {
+    id: string;
+  };
+}
+
 export interface IGetMoviesResult {
   dates: {
     maximum: string;
@@ -20,12 +30,9 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
-export interface IGetMoviesDetail {
-  adult: boolean;
-  backdrop_path: string;
+export interface IGetMoviesTrailer {
   id: number;
-  original_title: string;
-  poster_path: string;
+  results: ITrailer[];
 }
 
 export const getMovies = () => {
@@ -34,8 +41,8 @@ export const getMovies = () => {
   ).then((response) => response.json());
 };
 
-export const getDetail = (movieId ?: string) => {
+export const getTrailer = (movieId?: string) => {
   return fetch(
-    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`
+    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=ko-KR`
   ).then((response) => response.json());
 };

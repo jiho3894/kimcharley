@@ -1,18 +1,22 @@
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useState } from "react";
+import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
-import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
-  getDetail,
   getMovies,
-  IGetMoviesDetail,
+  getTrailer,
   IGetMoviesResult,
+  IGetMoviesTrailer,
+  RouterID,
 } from "../api";
 import { makeImagePath } from "../utils";
 
 const Wrapper = styled.div`
   background: black;
+  width: 1910px;
+  height: 100vh;
 `;
 
 const Loader = styled.div`
@@ -22,32 +26,34 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Banner = styled.div<{ bgImg: string }>`
-  height: 100vh;
+const Banner = styled.div`
+  width: 100%;
+  height: calc(100vh - 80px);
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url(${(props) => props.bgImg});
-  background-size: cover;
   color: white;
+  position: absolute;
+  background-color: black;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
 `;
 
 const Title = styled.h2`
-  font-size: 55px;
-  margin-bottom: 20px;
+  font-size: 50px;
+  margin-left: 100px;
+  margin-bottom: 10px;
 `;
 
 const Overview = styled.p`
-  font-size: 30px;
+  font-size: 25px;
   width: 30%;
-  margin-bottom: 20px;
+  margin-left: 100px;
 `;
 
 const PlayBtn = styled(motion.button)`
   width: 100px;
-  margin-bottom: 100px;
+  margin-left: 100px;
   height: 40px;
   font-size: 15px;
   background-color: rgba(128, 128, 128, 0.3);
@@ -56,6 +62,35 @@ const PlayBtn = styled(motion.button)`
   font-weight: 600;
   border: none;
   outline: none;
+`;
+
+const SliderControl = styled(motion.div)`
+  width: 400px;
+  height: 30px;
+  display: flex;
+  margin-bottom: 110px;
+  color: white;
+`;
+
+const Span1 = styled(motion.span)`
+  color: white;
+  z-index: 3000;
+  font-size: 20px;
+  margin-left: 30px;
+  font-weight: 600;
+`;
+
+const Increase = styled(motion.div)`
+  width: 100px;
+  background-color: red;
+  z-index: 3000;
+`;
+
+const Decrease = styled(motion.div)`
+  width: 100px;
+  background-color: green;
+  z-index: 3000;
+  margin-left: 30px;
 `;
 
 const Slider = styled.div`
@@ -71,9 +106,9 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgImg: string }>`
+const Box = styled(motion.div)<{ bgimg: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgImg});
+  background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
   height: 200px;
@@ -108,16 +143,35 @@ const Overlay = styled(motion.div)`
   top: 0;
 `;
 
-const BoxDetail = styled(motion.div)<{ bgImg: string }>`
+const BoxDetail = styled(motion.div)`
   width: 50%;
   height: 50vh;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-image: url(${(props) => props.bgImg});
+`;
+
+const MovieCover = styled(motion.div)<{ bgimg?: string }>`
+  width: 100%;
+  height: 100%;
+  background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center;
+`;
+
+const Fake = styled(motion.div)<{ bgimg?: string }>`
+  width: 100%;
+  height: 90%;
+  background-image: url(${(props) => props.bgimg});
+  background-size: cover;
+  background-position: center;
+`;
+
+const Fucking = styled.div`
+  width: 100%;
+  height: 88%;
+  background-color: black;
 `;
 
 const rowVars = {
@@ -160,7 +214,7 @@ const infoVars = {
 };
 
 const Home = () => {
-  const { movieId } = useParams();
+  const { state } = useLocation() as RouterID;
   const navigate = useNavigate();
   const movieMatch = useMatch(`/movies/:movieId`);
   const { scrollY } = useViewportScroll();
@@ -168,14 +222,13 @@ const Home = () => {
     "nowPlaying",
     getMovies
   );
-  const { isLoading: detailLoading, data: detail } = useQuery<IGetMoviesDetail>(
-    ["Detail", movieId],
-    () => getDetail(movieId)
-  );
+  const { isLoading: trailerLoading, data: trailer } =
+    useQuery<IGetMoviesTrailer>("trailer", () => getTrailer(state.id));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const [sound, setSound] = useState(false);
   let sliceF = 6;
-  const incraseIndex = () => {
+  const increaseIndex = () => {
     if (info) {
       if (leaving) return;
       toggleLeaving();
@@ -184,29 +237,67 @@ const Home = () => {
       setIndex((prev) => (prev === sliderPrev ? 0 : prev + 1));
     }
   };
+  const decreaseIndex = () => {
+    if (info) {
+      if (leaving) return;
+      toggleLeaving();
+      const totalMovies = info?.results.length - 1;
+      const sliderPrev = Math.floor(totalMovies / sliceF) - 1;
+      setIndex((prev) => (prev !== sliderPrev ? 3 : prev - 1));
+    }
+  };
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onClickBox = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
   const onClickOverlay = () => {
-    navigate("/");
+    navigate("/movies");
   };
+  const onClickSound = () => {
+    setSound((prev) => !prev);
+  };
+  const clickMovie =
+    movieMatch?.params.movieId &&
+    info?.results.find(
+      (movie) => String(movie.id) === movieMatch?.params.movieId
+    );
   return (
     <Wrapper>
       {infoLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner
-            onClick={incraseIndex}
-            bgImg={makeImagePath(info?.results[0].backdrop_path || "")}
-          >
+          {trailerLoading || trailer?.results[0]?.key === undefined ? (
+            <Fake
+              bgimg={makeImagePath(info?.results[0].backdrop_path || "")}
+            ></Fake>
+          ) : (
+            <Fucking>
+              <ReactPlayer
+                url={`https://www.youtube.com/embed/${
+                  trailer?.results[0]?.key ? "NbXCoYTC1Lk" : null
+                }`}
+                controls={false}
+                playing={true}
+                muted={sound ? true : false}
+                loop={true}
+                width="100%"
+                height="calc(100vh - 80px)"
+              ></ReactPlayer>
+            </Fucking>
+          )}
+          <Banner>
             <Title>{info?.results[0].title}</Title>
             <Overview>{info?.results[0].overview}</Overview>
-            <PlayBtn>
-              <span>&gt; 재생</span>
+            <PlayBtn onClick={onClickSound}>
+              <span>{sound ? "Sound On" : "Sound Off"}</span>
             </PlayBtn>
           </Banner>
+          <SliderControl>
+            <Span1>인기영화</Span1>
+            <Decrease onClick={decreaseIndex} />
+            <Increase onClick={increaseIndex} />
+          </SliderControl>
           <Slider>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
@@ -229,7 +320,7 @@ const Home = () => {
                         initial="normal"
                         variants={boxVars}
                         transition={{ type: "tween" }}
-                        bgImg={makeImagePath(movie.backdrop_path || "")}
+                        bgimg={makeImagePath(movie.backdrop_path || "")}
                       >
                         <Info variants={infoVars}>
                           <h4>{movie.title}</h4>
@@ -241,16 +332,23 @@ const Home = () => {
             </AnimatePresence>
           </Slider>
           <AnimatePresence>
-            {movieMatch || detailLoading ? (
+            {movieMatch && (
               <>
                 <Overlay onClick={onClickOverlay} />
                 <BoxDetail
-                  bgImg={makeImagePath(detail?.backdrop_path || "")}
                   layoutId={movieMatch?.params.movieId}
                   style={{ top: scrollY.get() + 100 }}
-                ></BoxDetail>
+                >
+                  {clickMovie && (
+                    <>
+                      <MovieCover
+                        bgimg={makeImagePath(clickMovie.backdrop_path)}
+                      ></MovieCover>
+                    </>
+                  )}
+                </BoxDetail>
               </>
-            ) : null}
+            )}
           </AnimatePresence>
         </>
       )}

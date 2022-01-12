@@ -91,12 +91,13 @@ const bodyVariants = {
     backgroundColor: "rgba(0, 0, 0, 0)",
   },
   scroll: {
-    backgroundColor: "rgba(0, 0, 0, 1)",
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
+    zIndex: 3000
   },
 };
 
 const Header = () => {
-  const HomeMatch = useMatch("/");
+  const HomeMatch = useMatch("/movies");
   const movieMatch = useMatch("/movies/:movieId");
   const TvMatch = useMatch("/tv");
   const [search, setSearch] = useState(false);
@@ -136,7 +137,7 @@ const Header = () => {
       </Link>
       <Container>
         <AList>
-          <SLink to="/">
+          <SLink to="/movies">
             HOME
             {HomeMatch || movieMatch ? (
               <Circle layoutId="circle" transition={{ duration: 0.15 }} />
