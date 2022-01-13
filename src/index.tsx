@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
+import { ReactQueryDevtools } from "react-query/devtools";
 import App from "./App";
 import { GlobalStyle } from "./GlobalStyle";
 import { theme } from "./theme";
@@ -13,7 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <App />

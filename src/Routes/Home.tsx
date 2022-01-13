@@ -2,21 +2,16 @@ import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
-import { Outlet, useLocation, useMatch, useNavigate } from "react-router-dom";
+import { Outlet, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import {
-  getMovies,
-  getTrailer,
-  IGetMoviesResult,
-  IGetMoviesTrailer,
-  RouterID,
-} from "../api";
+import { getMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
+import DetailCustomer from "./DetailCustomer";
 
 const Wrapper = styled.div`
   background: black;
   width: 1910px;
-  height: 100vh;
+  height: 80vh;
 `;
 
 const Loader = styled.div`
@@ -26,9 +21,15 @@ const Loader = styled.div`
   align-items: center;
 `;
 
+const PlayContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: black;
+`;
+
 const Banner = styled.div`
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh);
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -37,18 +38,6 @@ const Banner = styled.div`
   position: absolute;
   background-color: black;
   background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
-`;
-
-const Title = styled.h2`
-  font-size: 50px;
-  margin-left: 100px;
-  margin-bottom: 10px;
-`;
-
-const Overview = styled.p`
-  font-size: 25px;
-  width: 30%;
-  margin-left: 100px;
 `;
 
 const PlayBtn = styled(motion.button)`
@@ -68,8 +57,8 @@ const SliderControl = styled(motion.div)`
   width: 400px;
   height: 30px;
   display: flex;
-  margin-bottom: 110px;
   color: white;
+  margin-bottom: 5px;
 `;
 
 const Span1 = styled(motion.span)`
@@ -95,12 +84,11 @@ const Decrease = styled(motion.div)`
 
 const Slider = styled.div`
   position: relative;
-  top: -100px;
 `;
 
 const Row = styled(motion.div)`
   display: grid;
-  gap: 10px;
+  gap: 5px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
@@ -144,46 +132,40 @@ const Overlay = styled(motion.div)`
 `;
 
 const BoxDetail = styled(motion.div)`
-  width: 50%;
-  height: 50vh;
+  width: 45%;
+  height: 80vh;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
+  background-color: black;
+`;
+
+const DetailContainer = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
 `;
 
 const MovieCover = styled(motion.div)<{ bgimg?: string }>`
   width: 100%;
-  height: 100%;
+  height: 60%;
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center;
-`;
-
-const Fake = styled(motion.div)<{ bgimg?: string }>`
-  width: 100%;
-  height: 90%;
-  background-image: url(${(props) => props.bgimg});
-  background-size: cover;
-  background-position: center;
-`;
-
-const Fucking = styled.div`
-  width: 100%;
-  height: 88%;
-  background-color: black;
 `;
 
 const rowVars = {
-  hidden: {
-    x: window.outerWidth + 10,
-  },
+  hidden: (back: boolean) => ({
+    x: back ? -window.outerWidth - 10 : window.outerWidth + 10,
+  }),
   visible: {
     x: 0,
   },
-  exit: {
-    x: -window.outerWidth - 10,
-  },
+  exit: (back: boolean) => ({
+    x: back ? window.outerWidth + 10 : -window.outerWidth - 10,
+  }),
 };
 
 const boxVars = {
@@ -214,7 +196,6 @@ const infoVars = {
 };
 
 const Home = () => {
-  const { state } = useLocation() as RouterID;
   const navigate = useNavigate();
   const movieMatch = useMatch(`/movies/:movieId`);
   const { scrollY } = useViewportScroll();
@@ -222,17 +203,17 @@ const Home = () => {
     "nowPlaying",
     getMovies
   );
-  
-  const { isLoading: trailerLoading, data: trailer } =
-    useQuery<IGetMoviesTrailer>("trailer", () => getTrailer(state.id));
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [sound, setSound] = useState(false);
+  const [isBack, setIsBack] = useState(false);
+  const [pause, setPause] = useState(false);
   let sliceF = 6;
   const increaseIndex = () => {
     if (info) {
       if (leaving) return;
       toggleLeaving();
+      setIsBack(false);
       const totalMovies = info?.results.length - 1;
       const sliderPrev = Math.floor(totalMovies / sliceF) - 1;
       setIndex((prev) => (prev === sliderPrev ? 0 : prev + 1));
@@ -242,17 +223,20 @@ const Home = () => {
     if (info) {
       if (leaving) return;
       toggleLeaving();
+      setIsBack(true);
       const totalMovies = info?.results.length - 1;
       const sliderPrev = Math.floor(totalMovies / sliceF) - 1;
-      setIndex((prev) => (prev !== sliderPrev ? 3 : prev - 1));
+      setIndex((prev) => (prev === 0 ? sliderPrev : prev - 1));
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onClickBox = (movieId: number) => {
     navigate(`/movies/${movieId}`);
+    setPause(true);
   };
   const onClickOverlay = () => {
     navigate("/movies");
+    setPause(false);
   };
   const onClickSound = () => {
     setSound((prev) => !prev);
@@ -268,29 +252,31 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          {trailerLoading || trailer?.results[0]?.key === undefined ? (
-            <Fake
-              bgimg={makeImagePath(info?.results[0].backdrop_path || "")}
-            ></Fake>
-          ) : (
-            <Fucking>
-              <ReactPlayer
-                url={`https://www.youtube.com/embed/${trailer?.results[0]?.key}`}
-                controls={false}
-                playing={true}
-                muted={sound ? true : false}
-                loop={true}
-                width="100%"
-                height="calc(100vh - 80px)"
-              ></ReactPlayer>
-            </Fucking>
-          )}
+          {/* <Fake
+            bgimg={makeImagePath(info?.results[0].backdrop_path || "")}
+          ></Fake> */}
+          <PlayContainer>
+            <ReactPlayer
+              url={`https://www.youtube.com/embed/6rn-TRf1p6s`}
+              controls={false}
+              playing={pause ? false : true}
+              muted={sound ? true : false}
+              loop={true}
+              width="100%"
+              height="calc(100vh - 80px)"
+            ></ReactPlayer>
+          </PlayContainer>
           <Banner>
-            <Title>{info?.results[0].title}</Title>
-            <Overview>{info?.results[0].overview}</Overview>
             <PlayBtn onClick={onClickSound}>
               <span>{sound ? "Sound On" : "Sound Off"}</span>
             </PlayBtn>
+            <a
+              href="https://www.netflix.com/kr/login"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              재생
+            </a>
           </Banner>
           <SliderControl>
             <Span1>인기영화</Span1>
@@ -298,8 +284,13 @@ const Home = () => {
             <Increase onClick={increaseIndex} />
           </SliderControl>
           <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+            <AnimatePresence
+              custom={isBack}
+              initial={false}
+              onExitComplete={toggleLeaving}
+            >
               <Row
+                custom={isBack}
                 variants={rowVars}
                 initial="hidden"
                 animate="visible"
@@ -339,11 +330,12 @@ const Home = () => {
                   style={{ top: scrollY.get() + 100 }}
                 >
                   {clickMovie && (
-                    <>
+                    <DetailContainer>
                       <MovieCover
                         bgimg={makeImagePath(clickMovie.backdrop_path)}
-                      ></MovieCover>
-                    </>
+                      />
+                      <DetailCustomer />
+                    </DetailContainer>
                   )}
                 </BoxDetail>
               </>

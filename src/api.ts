@@ -11,12 +11,19 @@ interface IMovie {
 
 interface ITrailer {
   key: string;
+  id: string;
 }
 
 export interface RouterID {
   state: {
     id: string;
   };
+}
+
+export interface DetailID {
+  state: {
+    id: string;
+  }
 }
 
 export interface IGetMoviesResult {
