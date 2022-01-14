@@ -2,7 +2,7 @@ import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
-import { getTrailer, IGetMoviesTrailer } from "../api";
+import { getTrailer, IGetMoviesTrailer } from "../../Api/api";
 
 const PlayContainer = styled.div`
   width: 100%;
@@ -11,11 +11,10 @@ const PlayContainer = styled.div`
 `;
 
 const Detail = () => {
-  const movieMatch = useMatch(`/Detail/:movieId`);
+  const movieMatch = useMatch(`/movies/Detail/:movieId`);
   const { data } = useQuery<IGetMoviesTrailer>("trailer", () =>
     getTrailer(movieMatch?.params.movieId)
   );
-
   return (
     <div style={{ width: 200, height: 200, backgroundColor: "red" }}>
       <PlayContainer>

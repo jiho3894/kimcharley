@@ -2,11 +2,11 @@ import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
-import { Outlet, useMatch, useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../api";
-import { makeImagePath } from "../utils";
-import DetailCustomer from "./DetailCustomer";
+import { getMovies, IGetMoviesResult } from "../../Api/api";
+import { makeImagePath } from "../../Api/utils";
+import HometoDetail from "./HomeState";
 
 const Wrapper = styled.div`
   background: black;
@@ -29,7 +29,7 @@ const PlayContainer = styled.div`
 
 const Banner = styled.div`
   width: 100%;
-  height: calc(100vh);
+  height: 100vh;
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,13 @@ const PlayBtn = styled(motion.button)`
   outline: none;
 `;
 
-const SliderControl = styled(motion.div)`
+const BigContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: grid;
+`;
+
+export const SliderControl = styled(motion.div)`
   width: 400px;
   height: 30px;
   display: flex;
@@ -61,7 +67,7 @@ const SliderControl = styled(motion.div)`
   margin-bottom: 5px;
 `;
 
-const Span1 = styled(motion.span)`
+export const Span1 = styled(motion.span)`
   color: white;
   z-index: 3000;
   font-size: 20px;
@@ -69,24 +75,24 @@ const Span1 = styled(motion.span)`
   font-weight: 600;
 `;
 
-const Increase = styled(motion.div)`
+export const Increase = styled(motion.div)`
   width: 100px;
   background-color: red;
   z-index: 3000;
 `;
 
-const Decrease = styled(motion.div)`
+export const Decrease = styled(motion.div)`
   width: 100px;
   background-color: green;
   z-index: 3000;
   margin-left: 30px;
 `;
 
-const Slider = styled.div`
+export const Slider = styled.div`
   position: relative;
 `;
 
-const Row = styled(motion.div)`
+export const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
@@ -94,7 +100,7 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgimg: string }>`
+export const Box = styled(motion.div)<{ bgimg: string }>`
   background-color: white;
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
@@ -110,7 +116,7 @@ const Box = styled(motion.div)<{ bgimg: string }>`
   }
 `;
 
-const Info = styled(motion.div)`
+export const Info = styled(motion.div)`
   padding: 10px;
   background-color: ${(props) => props.theme.black.lighter};
   opacity: 0;
@@ -123,32 +129,31 @@ const Info = styled(motion.div)`
   }
 `;
 
-const Overlay = styled(motion.div)`
+export const Overlay = styled(motion.div)`
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0);
   position: fixed;
   top: 0;
 `;
 
-const BoxDetail = styled(motion.div)`
+export const BoxDetail = styled(motion.div)`
   width: 45%;
   height: 80vh;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: black;
 `;
 
-const DetailContainer = styled(motion.div)`
+export const DetailContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: relative;
   overflow: auto;
 `;
 
-const MovieCover = styled(motion.div)<{ bgimg?: string }>`
+export const MovieCover = styled(motion.div)<{ bgimg?: string }>`
   width: 100%;
   height: 60%;
   background-image: url(${(props) => props.bgimg});
@@ -156,7 +161,7 @@ const MovieCover = styled(motion.div)<{ bgimg?: string }>`
   background-position: center;
 `;
 
-const rowVars = {
+export const rowVars = {
   hidden: (back: boolean) => ({
     x: back ? -window.outerWidth - 10 : window.outerWidth + 10,
   }),
@@ -168,7 +173,7 @@ const rowVars = {
   }),
 };
 
-const boxVars = {
+export const boxVars = {
   normal: {
     scale: 1,
   },
@@ -184,7 +189,7 @@ const boxVars = {
   },
 };
 
-const infoVars = {
+export const infoVars = {
   hover: {
     opacity: 1,
     transition: {
@@ -252,9 +257,6 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          {/* <Fake
-            bgimg={makeImagePath(info?.results[0].backdrop_path || "")}
-          ></Fake> */}
           <PlayContainer>
             <ReactPlayer
               url={`https://www.youtube.com/embed/6rn-TRf1p6s`}
@@ -278,49 +280,51 @@ const Home = () => {
               재생
             </a>
           </Banner>
-          <SliderControl>
-            <Span1>인기영화</Span1>
-            <Decrease onClick={decreaseIndex} />
-            <Increase onClick={increaseIndex} />
-          </SliderControl>
-          <Slider>
-            <AnimatePresence
-              custom={isBack}
-              initial={false}
-              onExitComplete={toggleLeaving}
-            >
-              <Row
+          <BigContainer>
+            <SliderControl>
+              <Span1>인기영화</Span1>
+              <Decrease onClick={decreaseIndex} />
+              <Increase onClick={increaseIndex} />
+            </SliderControl>
+            <Slider>
+              <AnimatePresence
                 custom={isBack}
-                variants={rowVars}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: "tween", duration: 1 }}
-                key={index}
+                initial={false}
+                onExitComplete={toggleLeaving}
               >
-                {info?.results
-                  ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
-                  .map((movie) => {
-                    return (
-                      <Box
-                        layoutId={movie.id + ""}
-                        key={movie.id}
-                        onClick={() => onClickBox(movie.id)}
-                        whileHover="hover"
-                        initial="normal"
-                        variants={boxVars}
-                        transition={{ type: "tween" }}
-                        bgimg={makeImagePath(movie.backdrop_path || "")}
-                      >
-                        <Info variants={infoVars}>
-                          <h4>{movie.title}</h4>
-                        </Info>
-                      </Box>
-                    );
-                  })}
-              </Row>
-            </AnimatePresence>
-          </Slider>
+                <Row
+                  custom={isBack}
+                  variants={rowVars}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ type: "tween", duration: 1 }}
+                  key={index}
+                >
+                  {info?.results
+                    ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
+                    .map((movie) => {
+                      return (
+                        <Box
+                          layoutId={movie.id + ""}
+                          key={movie.id}
+                          onClick={() => onClickBox(movie.id)}
+                          whileHover="hover"
+                          initial="normal"
+                          variants={boxVars}
+                          transition={{ type: "tween" }}
+                          bgimg={makeImagePath(movie.backdrop_path || "")}
+                        >
+                          <Info variants={infoVars}>
+                            <h4>{movie.title}</h4>
+                          </Info>
+                        </Box>
+                      );
+                    })}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </BigContainer>
           <AnimatePresence>
             {movieMatch && (
               <>
@@ -334,7 +338,7 @@ const Home = () => {
                       <MovieCover
                         bgimg={makeImagePath(clickMovie.backdrop_path)}
                       />
-                      <DetailCustomer />
+                      <HometoDetail />
                     </DetailContainer>
                   )}
                 </BoxDetail>
@@ -343,7 +347,6 @@ const Home = () => {
           </AnimatePresence>
         </>
       )}
-      <Outlet />
     </Wrapper>
   );
 };

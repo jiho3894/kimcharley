@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link, useMatch } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../api";
+import { getMovies, IGetMoviesResult } from "../../Api/api";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -22,9 +21,6 @@ const DetailCustomer = () => {
     data?.results.find(
       (moive) => String(moive.id) === movieMatch.params.movieId
     );
-  useEffect(() => {
-    if (!match) return;
-  }, [match]);
   return (
     <Container>
       {isLoading ? (
@@ -34,7 +30,10 @@ const DetailCustomer = () => {
           {movieMatch && (
             <>
               {match && (
-                <Link to={`/Detail/${match.id}`} state={{ id: match.id }}>
+                <Link
+                  to={`/movies/Detail/${match.id}`}
+                  state={{ id: match.id }}
+                >
                   {match.id}
                 </Link>
               )}

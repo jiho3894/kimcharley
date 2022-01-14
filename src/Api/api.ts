@@ -23,7 +23,7 @@ export interface RouterID {
 export interface DetailID {
   state: {
     id: string;
-  }
+  };
 }
 
 export interface IGetMoviesResult {
@@ -51,5 +51,11 @@ export const getMovies = () => {
 export const getTrailer = (movieId?: string) => {
   return fetch(
     `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => response.json());
+};
+
+export const getUpcoming = () => {
+  return fetch(
+    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1`
   ).then((response) => response.json());
 };
