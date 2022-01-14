@@ -5,8 +5,13 @@ import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../../Api/api";
-import { makeImagePath } from "../../Api/utils";
+import {
+  getMovies,
+  getTrailer,
+  IGetMoviesResult,
+  IGetMoviesTrailer,
+} from "../../Api/api";
+import { makeImagePath, makeTrailerPath } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
 import HometoDetail from "./HomeState";
 
@@ -117,13 +122,14 @@ export const Box = styled(motion.div)<{ bgimg: string }>`
 
 export const Info = styled(motion.div)`
   padding: 10px;
-  background-color: white;
+  background-color: black;
   opacity: 0;
   position: absolute;
   width: 100%;
   bottom: 0;
   h4 {
     text-align: center;
+    color: white;
     font-size: 18px;
   }
 `;
@@ -203,9 +209,13 @@ const Home = () => {
   const navigate = useNavigate();
   const movieMatch = useMatch(`/movies/:movieId`);
   const { scrollY } = useViewportScroll();
+  const stateMovieId = localStorage.getItem("movieId");
   const { isLoading: infoLoading, data: info } = useQuery<IGetMoviesResult>(
     "nowPlaying",
     getMovies
+  );
+  const { data: trailer } = useQuery<IGetMoviesTrailer>("startTrailer", () =>
+    getTrailer(String(stateMovieId))
   );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -265,7 +275,7 @@ const Home = () => {
         <>
           <PlayContainer>
             <ReactPlayer
-              url={`https://www.youtube.com/embed/6rn-TRf1p6s`}
+              url={makeTrailerPath(trailer?.results[0].key)}
               controls={false}
               playing={pause ? false : true}
               muted={isSound === "0" ? true : false}
@@ -306,7 +316,7 @@ const Home = () => {
                 key={index}
               >
                 {info?.results
-                  ?.slice(index * sliceF, index * sliceF + sliceF)
+                  ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
                   .map((movie) => {
                     return (
                       <Box

@@ -16,28 +16,35 @@ const PlayContainer = styled.div`
 `;
 
 const UpcmoingDetail = () => {
-  const { isLoading: wait, data: info } = useQuery<IGetMoviesResult>(
+  const upcomingMatch = useMatch(`/upcoming/:upcomingId`);
+  const { data: info } = useQuery<IGetMoviesResult>(
     "Upcoming",
     getUpcoming
   );
-  const upcomingMatch = useMatch(`/upcoming/:upcomingId`);
   const { isLoading, data } = useQuery<IGetMoviesTrailer>("trailer", () =>
     getTrailer(upcomingMatch?.params.upcomingId)
   );
-  console.log(data?.results[0].key);
+  const clickMatch =
+    upcomingMatch?.params.upcomingId &&
+    info?.results.find(
+      (movie) => String(movie.id) === upcomingMatch?.params.upcomingId
+    );
   return (
     <PlayContainer>
       {isLoading ? (
         "Loading"
       ) : (
-        <ReactPlayer
-          url={`https://www.youtube.com/watch?v=${data?.results[0].key}`}
-          controls={false}
-          playing={true}
-          loop={true}
-          width="100%"
-          height="calc(100vh - 80px)"
-        ></ReactPlayer>
+        <>
+          <ReactPlayer
+            url={`https://www.youtube.com/embed/${data?.results[0].key}`}
+            controls={false}
+            playing={true}
+            loop={true}
+            width="80%"
+            height="calc(80vh - 80px)"
+          ></ReactPlayer>
+          <>{clickMatch && <>{clickMatch.id}</>}</>
+        </>
       )}
     </PlayContainer>
   );

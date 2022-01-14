@@ -16,13 +16,7 @@ interface ITrailer {
 
 export interface RouterID {
   state: {
-    id: string;
-  };
-}
-
-export interface DetailID {
-  state: {
-    id: string;
+    id: number;
   };
 }
 
@@ -38,24 +32,24 @@ export interface IGetMoviesResult {
 }
 
 export interface IGetMoviesTrailer {
-  id: number;
+  id: string;
   results: ITrailer[];
 }
 
 export const getMovies = () => {
   return fetch(
-    `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko-KR`
+    `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US`
   ).then((response) => response.json());
 };
 
 export const getTrailer = (movieId?: string) => {
   return fetch(
-    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=ko-KR`
+    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
   ).then((response) => response.json());
 };
 
 export const getUpcoming = () => {
   return fetch(
-    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1`
+    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
   ).then((response) => response.json());
 };
