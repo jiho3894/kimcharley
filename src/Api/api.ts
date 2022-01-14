@@ -44,7 +44,7 @@ export interface IGetMoviesTrailer {
 
 export const getMovies = () => {
   return fetch(
-    `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko-KR`
+    `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko-KR`
   ).then((response) => response.json());
 };
 

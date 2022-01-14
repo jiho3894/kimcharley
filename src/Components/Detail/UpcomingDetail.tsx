@@ -1,26 +1,45 @@
+import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
-import { getUpcoming, IGetMoviesResult } from "../../Api/api";
+import {
+  getTrailer,
+  getUpcoming,
+  IGetMoviesResult,
+  IGetMoviesTrailer,
+} from "../../Api/api";
 
-const Container = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: yellow;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const PlayContainer = styled.div`
+  width: 100%;
+  height: 88%;
+  background-color: black;
 `;
 
 const UpcmoingDetail = () => {
-  const upcomingMatch = useMatch(`/upcoming/:upcomingId`);
-  const { isLoading, data } = useQuery<IGetMoviesResult>(
+  const { isLoading: wait, data: info } = useQuery<IGetMoviesResult>(
     "Upcoming",
     getUpcoming
   );
-  console.log(upcomingMatch);
+  const upcomingMatch = useMatch(`/upcoming/:upcomingId`);
+  const { isLoading, data } = useQuery<IGetMoviesTrailer>("trailer", () =>
+    getTrailer(upcomingMatch?.params.upcomingId)
+  );
+  console.log(data?.results[0].key);
   return (
-    <Container>{isLoading ? "loading" : <>{data?.total_pages}</>}</Container>
+    <PlayContainer>
+      {isLoading ? (
+        "Loading"
+      ) : (
+        <ReactPlayer
+          url={`https://www.youtube.com/watch?v=${data?.results[0].key}`}
+          controls={false}
+          playing={true}
+          loop={true}
+          width="100%"
+          height="calc(100vh - 80px)"
+        ></ReactPlayer>
+      )}
+    </PlayContainer>
   );
 };
 

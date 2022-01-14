@@ -1,16 +1,18 @@
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../../Api/api";
 import { makeImagePath } from "../../Api/utils";
+import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
 import HometoDetail from "./HomeState";
 
 const Wrapper = styled.div`
   background: black;
-  width: 1910px;
+  width: 100%;
   height: 80vh;
 `;
 
@@ -23,7 +25,7 @@ const Loader = styled.div`
 
 const PlayContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 94%;
   background-color: black;
 `;
 
@@ -45,22 +47,19 @@ const PlayBtn = styled(motion.button)`
   margin-left: 100px;
   height: 40px;
   font-size: 15px;
-  background-color: rgba(128, 128, 128, 0.3);
   border-radius: 5px;
-  color: white;
   font-weight: 600;
   border: none;
   outline: none;
+  z-index: 3000;
 `;
 
-const BigContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: grid;
+const ATag = styled.a`
+  z-index: 3000;
 `;
 
 export const SliderControl = styled(motion.div)`
-  width: 400px;
+  width: 100%;
   height: 30px;
   display: flex;
   color: white;
@@ -118,7 +117,7 @@ export const Box = styled(motion.div)<{ bgimg: string }>`
 
 export const Info = styled(motion.div)`
   padding: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-color: white;
   opacity: 0;
   position: absolute;
   width: 100%;
@@ -210,16 +209,26 @@ const Home = () => {
   );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  const [sound, setSound] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [pause, setPause] = useState(false);
+  const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
+  const { OFF, ON } = SoundEnums;
+  const handleChangeSound = useCallback((): void => {
+    if (isSound === OFF) {
+      localStorage.setItem("sound", ON);
+      setIsSound(ON);
+      return;
+    }
+    localStorage.setItem("sound", OFF);
+    setIsSound(OFF);
+  }, [OFF, ON, isSound, setIsSound]);
   let sliceF = 6;
   const increaseIndex = () => {
     if (info) {
       if (leaving) return;
       toggleLeaving();
       setIsBack(false);
-      const totalMovies = info?.results.length - 1;
+      const totalMovies = info?.results.length;
       const sliderPrev = Math.floor(totalMovies / sliceF) - 1;
       setIndex((prev) => (prev === sliderPrev ? 0 : prev + 1));
     }
@@ -243,9 +252,6 @@ const Home = () => {
     navigate("/movies");
     setPause(false);
   };
-  const onClickSound = () => {
-    setSound((prev) => !prev);
-  };
   const clickMovie =
     movieMatch?.params.movieId &&
     info?.results.find(
@@ -262,69 +268,66 @@ const Home = () => {
               url={`https://www.youtube.com/embed/6rn-TRf1p6s`}
               controls={false}
               playing={pause ? false : true}
-              muted={sound ? true : false}
+              muted={isSound === "0" ? true : false}
               loop={true}
               width="100%"
               height="calc(100vh - 80px)"
             ></ReactPlayer>
           </PlayContainer>
-          <Banner>
-            <PlayBtn onClick={onClickSound}>
-              <span>{sound ? "Sound On" : "Sound Off"}</span>
+          <Banner />
+          <SliderControl>
+            <Span1>인기영화</Span1>
+            <Decrease onClick={decreaseIndex} />
+            <Increase onClick={increaseIndex} />
+            <PlayBtn onClick={handleChangeSound}>
+              <span>{isSound === "0" ? "Sound On" : "Sound Off"}</span>
             </PlayBtn>
-            <a
+            <ATag
               href="https://www.netflix.com/kr/login"
               target="_blank"
               rel="noopener noreferrer"
             >
-              재생
-            </a>
-          </Banner>
-          <BigContainer>
-            <SliderControl>
-              <Span1>인기영화</Span1>
-              <Decrease onClick={decreaseIndex} />
-              <Increase onClick={increaseIndex} />
-            </SliderControl>
-            <Slider>
-              <AnimatePresence
+              넷플릭스
+            </ATag>
+          </SliderControl>
+          <Slider>
+            <AnimatePresence
+              custom={isBack}
+              initial={false}
+              onExitComplete={toggleLeaving}
+            >
+              <Row
                 custom={isBack}
-                initial={false}
-                onExitComplete={toggleLeaving}
+                variants={rowVars}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: "tween", duration: 1 }}
+                key={index}
               >
-                <Row
-                  custom={isBack}
-                  variants={rowVars}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  transition={{ type: "tween", duration: 1 }}
-                  key={index}
-                >
-                  {info?.results
-                    ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
-                    .map((movie) => {
-                      return (
-                        <Box
-                          layoutId={movie.id + ""}
-                          key={movie.id}
-                          onClick={() => onClickBox(movie.id)}
-                          whileHover="hover"
-                          initial="normal"
-                          variants={boxVars}
-                          transition={{ type: "tween" }}
-                          bgimg={makeImagePath(movie.backdrop_path || "")}
-                        >
-                          <Info variants={infoVars}>
-                            <h4>{movie.title}</h4>
-                          </Info>
-                        </Box>
-                      );
-                    })}
-                </Row>
-              </AnimatePresence>
-            </Slider>
-          </BigContainer>
+                {info?.results
+                  ?.slice(index * sliceF, index * sliceF + sliceF)
+                  .map((movie) => {
+                    return (
+                      <Box
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        onClick={() => onClickBox(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        variants={boxVars}
+                        transition={{ type: "tween" }}
+                        bgimg={makeImagePath(movie.backdrop_path || "")}
+                      >
+                        <Info variants={infoVars}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    );
+                  })}
+              </Row>
+            </AnimatePresence>
+          </Slider>
           <AnimatePresence>
             {movieMatch && (
               <>

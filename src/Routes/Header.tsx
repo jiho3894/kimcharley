@@ -34,7 +34,7 @@ const Container = styled.div`
   width: 82%;
   display: flex;
   justify-content: space-between;
-  color: ${(props) => props.theme.white.lighter};
+  color: white
 `;
 
 const AList = styled.div`

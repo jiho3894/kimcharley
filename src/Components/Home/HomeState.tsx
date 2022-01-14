@@ -7,7 +7,7 @@ import { getMovies, IGetMoviesResult } from "../../Api/api";
 const Container = styled(motion.div)`
   width: 100%;
   height: 50%;
-  color: ${(prop) => prop.theme.white.lighter};
+  color: white;
 `;
 
 const DetailCustomer = () => {
@@ -32,7 +32,7 @@ const DetailCustomer = () => {
               {match && (
                 <Link
                   to={`/movies/Detail/${match.id}`}
-                  state={{ id: match.id }}
+                  // state={{ id: match.id }}
                 >
                   {match.id}
                 </Link>

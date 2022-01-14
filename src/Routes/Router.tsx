@@ -6,7 +6,7 @@ import TV from "../Components/Tv/TV";
 import Header from "./Header";
 import MainHome from "../Components/Home/MainHome";
 import TvDetail from "../Components/Detail/UpcomingDetail";
-import Upcoming from "../Upcoming/Upcoming";
+import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
 
 const Router = () => {

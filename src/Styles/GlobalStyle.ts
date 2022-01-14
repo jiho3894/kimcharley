@@ -56,10 +56,10 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   color:black;
   line-height: 1.2;
-  background-color: ${(prop) => prop.theme.black.darker};
+  background-color: black
 }
 a {
   text-decoration:none;
-  color:${(prop) => prop.theme.white.lighter};
+  color: white
 }
 `;

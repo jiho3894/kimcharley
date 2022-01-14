@@ -16,18 +16,16 @@ const Detail = () => {
     getTrailer(movieMatch?.params.movieId)
   );
   return (
-    <div style={{ width: 200, height: 200, backgroundColor: "red" }}>
-      <PlayContainer>
-        <ReactPlayer
-          url={`https://www.youtube.com/embed/${data?.results[0].key}&origin=http://localhost:3000`}
-          controls={false}
-          playing={true}
-          loop={true}
-          width="100%"
-          height="calc(100vh - 80px)"
-        ></ReactPlayer>
-      </PlayContainer>
-    </div>
+    <PlayContainer>
+      <ReactPlayer
+        url={`https://www.youtube.com/embed/${data?.results[0].key}&origin=http://localhost:3000`}
+        controls={false}
+        playing={true}
+        loop={true}
+        width="100%"
+        height="calc(100vh - 80px)"
+      ></ReactPlayer>
+    </PlayContainer>
   );
 };
 
