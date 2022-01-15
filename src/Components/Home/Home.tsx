@@ -48,9 +48,6 @@ const Banner = styled.div`
 `;
 
 const PlayBtn = styled(motion.button)`
-  width: 100px;
-  margin-left: 100px;
-  height: 40px;
   font-size: 15px;
   border-radius: 5px;
   font-weight: 600;
@@ -60,6 +57,7 @@ const PlayBtn = styled(motion.button)`
 `;
 
 const ATag = styled.a`
+  font-size: 22px;
   z-index: 3000;
 `;
 
@@ -149,6 +147,8 @@ export const BoxDetail = styled(motion.div)`
   left: 0;
   right: 0;
   margin: 0 auto;
+  background-color: green;
+  z-index: 6000;
 `;
 
 export const DetailContainer = styled(motion.div)`
@@ -160,7 +160,7 @@ export const DetailContainer = styled(motion.div)`
 
 export const MovieCover = styled(motion.div)<{ bgimg?: string }>`
   width: 100%;
-  height: 60%;
+  height: 50%;
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center;
@@ -297,7 +297,7 @@ const Home = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              넷플릭스
+              Netflix
             </ATag>
           </SliderControl>
           <Slider>

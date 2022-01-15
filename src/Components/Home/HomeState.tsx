@@ -32,9 +32,8 @@ const DetailCustomer = () => {
               {match && (
                 <Link
                   to={`/movies/Detail/${match.id}`}
-                  // state={{ id: match.id }}
                 >
-                  {match.id}
+                  {match.title}
                 </Link>
               )}
             </>
