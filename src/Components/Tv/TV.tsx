@@ -1,16 +1,34 @@
-import styled from "styled-components";
-
-const Container = styled.div`
-  width: 500px;
-  height: 500px;
-  background-color: green;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
+import { getTv, IGetTVResult } from "../../Api/api";
+import { makeImagePath } from "../../Api/utils";
+import { Box, boxVars, Info, infoVars } from "../Home/Home";
 
 const Tv = () => {
-  return <Container>hello</Container>;
+  const { isLoading, data } = useQuery<IGetTVResult>("Upcoming", getTv);
+  return (
+    <>
+      {isLoading
+        ? "Loading"
+        : data?.results.map((tv) => {
+            return (
+              <Link key={tv.id} to={`/tv/Detail/${tv.id}`}>
+                <Box
+                  whileHover="hover"
+                  initial="normal"
+                  variants={boxVars}
+                  transition={{ type: "tween" }}
+                  bgimg={makeImagePath(tv.backdrop_path)}
+                >
+                  <Info variants={infoVars}>
+                    <h4>{tv.original_name}</h4>
+                  </Info>
+                </Box>
+              </Link>
+            );
+          })}
+    </>
+  );
 };
 
 export default Tv;

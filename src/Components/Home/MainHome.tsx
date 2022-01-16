@@ -4,7 +4,7 @@ import { getMovies, IGetMoviesResult } from "../../Api/api";
 
 const Customer = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("start", getMovies);
-  localStorage.setItem('movieId', String(data?.results[0].id));
+  localStorage.setItem("movieId", String(data?.results[0].id));
   return (
     <>
       {isLoading ? (
@@ -20,13 +20,10 @@ const Customer = () => {
             alignItems: "center",
           }}
         >
-          <Link to="/movies">
-            {data?.results[0].id}
-          </Link>
+          <Link to="/movies">{data?.results[0].id}</Link>
         </div>
       )}
     </>
   );
 };
 export default Customer;
-

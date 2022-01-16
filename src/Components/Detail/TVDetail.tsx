@@ -3,10 +3,10 @@ import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
 import styled from "styled-components";
 import {
-  getMoviesDetail,
-  getMoviesTrailer,
-  IGetMoviesDetail,
-  IGetMoviesTrailer,
+  getTVDetail,
+  getTvTrailer,
+  IGetTVDetail,
+  IGetTVTrailer,
 } from "../../Api/api";
 import { makeTrailerPath } from "../../Api/utils";
 
@@ -16,13 +16,13 @@ const PlayContainer = styled.div`
   background-color: black;
 `;
 
-const UpcmoingDetail = () => {
-  const upcomingMatch = useMatch(`/upcoming/:upcomingId`);
-  const { isLoading, data } = useQuery<IGetMoviesTrailer>("trailer", () =>
-    getMoviesTrailer(upcomingMatch?.params.upcomingId)
+const TVDetail = () => {
+  const tvMatch = useMatch(`/tv/Detail/:tvId`);
+  const { isLoading, data } = useQuery<IGetTVTrailer>("TVtrailer", () =>
+    getTvTrailer(tvMatch?.params.tvId)
   );
-  const { data: info } = useQuery<IGetMoviesDetail>("MovieDetail", () =>
-    getMoviesDetail(upcomingMatch?.params.upcomingId)
+  const { data: info } = useQuery<IGetTVDetail>("TVDetail", () =>
+    getTVDetail(tvMatch?.params.tvId)
   );
   return (
     <>
@@ -75,4 +75,4 @@ const UpcmoingDetail = () => {
   );
 };
 
-export default UpcmoingDetail;
+export default TVDetail;

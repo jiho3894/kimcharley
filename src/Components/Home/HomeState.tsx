@@ -24,17 +24,13 @@ const DetailCustomer = () => {
   return (
     <Container>
       {isLoading ? (
-        "hi"
+        "Loading"
       ) : (
         <>
           {movieMatch && (
             <>
               {match && (
-                <Link
-                  to={`/movies/Detail/${match.id}`}
-                >
-                  {match.title}
-                </Link>
+                <Link to={`/movies/Detail/${match.id}`}>{match.title}</Link>
               )}
             </>
           )}

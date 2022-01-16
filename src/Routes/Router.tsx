@@ -2,10 +2,10 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import HomeDetail from "../Components/Detail/HomeDetail";
 import Home from "../Components/Home/Home";
 import Search from "../Components/Search/Search";
-import TV from "../Components/Tv/TV";
+import TV from "../Components/TV/TV";
 import Header from "./Header";
 import MainHome from "../Components/Home/MainHome";
-import TvDetail from "../Components/Detail/UpcomingDetail";
+import TvDetail from "../Components/Detail/TVDetail";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
 
@@ -23,7 +23,7 @@ const Router = () => {
         <Route path="/upcoming/:upcomingId" element={<UpcomingDetail />} />
         <Route path="/tv" element={<TV />} />
         <Route path="/tv/Detail/:movieId" element={<TvDetail />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/search/*" element={<Search />} />
       </Routes>
     </HashRouter>
   );

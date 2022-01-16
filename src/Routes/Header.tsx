@@ -1,6 +1,7 @@
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const Head = styled(motion.header)`
@@ -34,7 +35,7 @@ const Container = styled.div`
   width: 82%;
   display: flex;
   justify-content: space-between;
-  color: white
+  color: white;
 `;
 
 const AList = styled.div`
@@ -66,7 +67,7 @@ const Circle = styled(motion.span)`
   top: 55px;
 `;
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.form`
   width: 100%;
   height: 60px;
   display: flex;
@@ -97,7 +98,12 @@ const bodyVariants = {
   },
 };
 
+interface IForm {
+  query: string | undefined;
+}
+
 const Header = () => {
+  const navigate = useNavigate();
   const HomeMatch = useMatch("/movies");
   const movieMatch = useMatch("/movies/:movieId");
   const TvMatch = useMatch("/tv");
@@ -106,6 +112,10 @@ const Header = () => {
   const onClick = () => setSearch((prev) => !prev);
   const { scrollY } = useViewportScroll();
   const scrollAnimation = useAnimation();
+  const { register, handleSubmit } = useForm<IForm>();
+  const onVaild = (data: IForm) => {
+    navigate(`/search/?query=${data.query}`);
+  };
   useEffect(() => {
     scrollY.onChange(() => {
       if (scrollY.get() > 30) {
@@ -156,8 +166,9 @@ const Header = () => {
           </SLink>
         </AList>
         <BList>
-          <SearchContainer>
+          <SearchContainer onSubmit={handleSubmit(onVaild)}>
             <SearchInput
+              {...register("query", { required: true, minLength: 2 })}
               transition={{ type: "linear" }}
               animate={{ scaleX: search ? 1 : 0 }}
               placeholder="search moive..."

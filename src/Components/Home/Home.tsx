@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   getMovies,
-  getTrailer,
+  getMoviesTrailer,
   IGetMoviesResult,
   IGetMoviesTrailer,
 } from "../../Api/api";
@@ -96,7 +96,7 @@ export const Slider = styled.div`
 
 export const Row = styled(motion.div)`
   display: grid;
-  gap: 5px;
+  gap: 3px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
@@ -215,7 +215,7 @@ const Home = () => {
     getMovies
   );
   const { data: trailer } = useQuery<IGetMoviesTrailer>("startTrailer", () =>
-    getTrailer(String(stateMovieId))
+    getMoviesTrailer(String(stateMovieId))
   );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -287,8 +287,8 @@ const Home = () => {
           <Banner />
           <SliderControl>
             <Span1>인기영화</Span1>
-            <Decrease onClick={decreaseIndex} />
-            <Increase onClick={increaseIndex} />
+            <Decrease onClick={decreaseIndex}>Prev</Decrease>
+            <Increase onClick={increaseIndex}>Next</Increase>
             <PlayBtn onClick={handleChangeSound}>
               <span>{isSound === "0" ? "Sound On" : "Sound Off"}</span>
             </PlayBtn>
