@@ -23,7 +23,7 @@ const Tv = () => {
                   <Info variants={infoVars}>
                     <h4>{tv.original_name}</h4>
                   </Info>
-                </Box>
+                </Box> 
               </Link>
             );
           })}
