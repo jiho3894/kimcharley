@@ -37,7 +37,7 @@ const Detail = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}
+          }} 
         ></div>
       ) : (
         <>
