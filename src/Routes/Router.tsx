@@ -22,7 +22,7 @@ const Router = () => {
         <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/upcoming/:upcomingId" element={<UpcomingDetail />} />
         <Route path="/tv" element={<TV />} />
-        <Route path="/tv/Detail/:movieId" element={<TvDetail />} />
+        <Route path="/tv/Detail/:tvId" element={<TvDetail />} />
         <Route path="/search/*" element={<Search />} /> 
       </Routes>
     </HashRouter>
