@@ -2,7 +2,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import HomeDetail from "../Components/Detail/HomeDetail";
 import Home from "../Components/Home/Home";
 import Search from "../Components/Search/Search";
-import TV from "../Components/TV/TV";
+import TV from "../Components/Tv/Tv"
 import Header from "./Header";
 import MainHome from "../Components/Home/MainHome";
 import TvDetail from "../Components/Detail/TVDetail";
