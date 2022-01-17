@@ -16,6 +16,13 @@ const PlayContainer = styled.div`
   background-color: black;
 `;
 
+const Fuck = styled.details`
+  &[open] {
+    color: blue;
+  }
+
+`
+
 const TVDetail = () => {
   const tvMatch = useMatch(`/tv/Detail/:tvId`);
   const { isLoading, data } = useQuery<IGetTVTrailer>("TVtrailer", () =>
@@ -51,7 +58,7 @@ const TVDetail = () => {
               height="calc(70vh - 80px)"
             ></ReactPlayer>
           </PlayContainer>
-          <div
+          <Fuck
             style={{
               width: 300,
               height: 300,
@@ -61,14 +68,16 @@ const TVDetail = () => {
               alignItems: "center",
             }}
           >
-            <a
+            {/* <a
               href={`${info?.homepage}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               이동
-            </a>
-          </div>
+            </a> */}
+            <summary>?</summary>
+            {info?.overview}
+          </Fuck>
         </>
       )}
     </>

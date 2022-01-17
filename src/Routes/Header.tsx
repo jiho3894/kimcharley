@@ -125,6 +125,14 @@ const Header = () => {
       }
     });
   }, [scrollY, scrollAnimation]);
+  if (
+    HomeMatch === null &&
+    UpcomingMatch === null &&
+    TvMatch === null &&
+    movieMatch === null
+  )
+    return null;
+
   return (
     <Head variants={bodyVariants} initial="top" animate={scrollAnimation}>
       <Link to="/">
