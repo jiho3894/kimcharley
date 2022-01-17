@@ -6,31 +6,33 @@ import { getMovies, IGetMoviesResult } from "../../Api/api";
 const Body = styled.div`
   min-width: 1375px;
   max-height: 100vh;
+  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg");
+  background-size: cover;
+  background-position-y: -300px;
+  background-repeat: no-repeat;
 `;
 
 const MainHeader = styled.div`
   width: 100%;
   height: 150px;
-  background-color: green;
   position: relative;
   display: flex;
+  z-index: 10;
 `;
 
 const HeaderWrapper = styled.header`
   width: 98%;
   height: 100px;
-  margin: 20px;
   position: absolute;
-  background-color: yellow;
   display: flex;
-  align-items: center;
   justify-content: space-between;
 `;
 
 const LogoBox = styled.div`
   width: 15rem;
   height: 80px;
-  background-color: red;
+  margin: 5px;
+  color: red;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,23 +43,27 @@ const LogoBox = styled.div`
 `;
 
 const LoginBtnBox = styled.div`
-  width: 15rem;
+  width: 5rem;
   height: 80px;
-  background-color: red;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const LoginBox = styled.div`
-  width: 100px;
-  height: 40px;
-  background-color: blue;
+  width: 120px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   button {
-    font-size: 24px;
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 0;
+    background-color: red;
+    color: white;
   }
 `;
 
@@ -66,13 +72,16 @@ const Banner = styled.div`
   height: 85vh;
   top: 0;
   position: absolute;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.5)
+  );
 `;
 
 const SectionWrapper = styled.div`
   width: 100%;
   height: 65vh;
-  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg");
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,7 +90,7 @@ const SectionWrapper = styled.div`
 
 const SectionContainer = styled.div`
   width: 40%;
-  height: 50vh;
+  height: 40vh;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -194,7 +203,7 @@ const Customer = () => {
               </LogoBox>
               <LoginBtnBox>
                 <LoginBox>
-                  <button>LOGIN</button>
+                  <button>로그인</button>
                 </LoginBox>
               </LoginBtnBox>
             </HeaderWrapper>
