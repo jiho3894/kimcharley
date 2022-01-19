@@ -56,6 +56,8 @@ const BList = styled.div`
   width: 240px;
   display: flex;
   align-items: center;
+  /**/
+  display: none;
 `;
 
 const Circle = styled(motion.span)`

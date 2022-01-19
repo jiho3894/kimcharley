@@ -20,8 +20,7 @@ const Fuck = styled.details`
   &[open] {
     color: blue;
   }
-
-`
+`;
 
 const TVDetail = () => {
   const tvMatch = useMatch(`/tv/Detail/:tvId`);
@@ -51,6 +50,7 @@ const TVDetail = () => {
           <PlayContainer>
             <ReactPlayer
               url={makeTrailerPath(data?.results[0].key)}
+              volume={0.2}
               controls={false}
               playing={true}
               loop={true}

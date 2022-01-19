@@ -13,7 +13,7 @@ import {
 } from "../../Api/api";
 import { makeImagePath, makeTrailerPath } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
-import HometoDetail from "./HomeState";
+import HometoDetail from "./HomeDetail";
 
 const Wrapper = styled.div`
   background: black;
@@ -30,7 +30,7 @@ const Loader = styled.div`
 
 const PlayContainer = styled.div`
   width: 100%;
-  height: 94%;
+  height: 85vh;
   background-color: black;
 `;
 
@@ -43,55 +43,72 @@ const Banner = styled.div`
   justify-content: center;
   color: white;
   position: absolute;
-  background-color: black;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
 `;
 
-const PlayBtn = styled(motion.button)`
-  font-size: 15px;
-  border-radius: 5px;
-  font-weight: 600;
-  border: none;
-  outline: none;
-  z-index: 3000;
-`;
-
-const ATag = styled.a`
-  font-size: 22px;
-  z-index: 3000;
+export const SliderContainer = styled(motion.div)`
+  height: 50vh;
+  width: 100%;
 `;
 
 export const SliderControl = styled(motion.div)`
-  width: 100%;
-  height: 30px;
+  width: 92%;
+  height: 50px;
   display: flex;
   color: white;
   margin-bottom: 5px;
+  justify-content: space-between;
 `;
 
 export const Span1 = styled(motion.span)`
   color: white;
-  z-index: 3000;
-  font-size: 20px;
-  margin-left: 30px;
+  z-index: 30;
+  font-size: 30px;
+  margin-left: 50px;
   font-weight: 600;
+`;
+
+const PlayBtn = styled(motion.button)`
+  font-size: 15px;
+  height: 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  z-index: 10;
+`;
+
+const PageChange = styled.div`
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
 `;
 
 export const Increase = styled(motion.div)`
   width: 100px;
-  background-color: red;
-  z-index: 3000;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 `;
 
 export const Decrease = styled(motion.div)`
   width: 100px;
-  background-color: green;
-  z-index: 3000;
-  margin-left: 30px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 `;
 
 export const Slider = styled.div`
   position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 export const Row = styled(motion.div)`
@@ -99,7 +116,8 @@ export const Row = styled(motion.div)`
   gap: 3px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
-  width: 100%;
+  width: 95%;
+  opacity: 0.9;
 `;
 
 export const Box = styled(motion.div)<{ bgimg: string }>`
@@ -107,7 +125,7 @@ export const Box = styled(motion.div)<{ bgimg: string }>`
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
   background-position: center center;
-  height: 200px;
+  height: 400px;
   font-size: 66px;
   position: relative;
   &:first-child {
@@ -135,27 +153,37 @@ export const Info = styled(motion.div)`
 export const Overlay = styled(motion.div)`
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
   position: fixed;
   top: 0;
+  z-index: 100;
 `;
 
 export const BoxDetail = styled(motion.div)`
-  width: 45%;
+  width: 50%;
   height: 80vh;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: green;
-  z-index: 6000;
+  z-index: 200;
 `;
 
 export const DetailContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: relative;
-  overflow: auto;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 12px;
+    border-radius: 50px;
+    background: black;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(#e0eafc, #cfdef3);
+    border-radius: 50px;
+  }
+  border-radius: 50px 0 0 50px;
 `;
 
 export const MovieCover = styled(motion.div)<{ bgimg?: string }>`
@@ -276,6 +304,7 @@ const Home = () => {
           <PlayContainer>
             <ReactPlayer
               url={makeTrailerPath(trailer?.results[0].key)}
+              volume={0.3}
               controls={false}
               playing={pause ? false : true}
               muted={isSound === "0" ? true : false}
@@ -285,59 +314,90 @@ const Home = () => {
             ></ReactPlayer>
           </PlayContainer>
           <Banner />
-          <SliderControl>
-            <Span1>인기영화</Span1>
-            <Decrease onClick={decreaseIndex}>Prev</Decrease>
-            <Increase onClick={increaseIndex}>Next</Increase>
-            <PlayBtn onClick={handleChangeSound}>
-              <span>{isSound === "0" ? "Sound On" : "Sound Off"}</span>
-            </PlayBtn>
-            <ATag
-              href="https://www.netflix.com/kr/login"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Netflix
-            </ATag>
-          </SliderControl>
-          <Slider>
-            <AnimatePresence
-              custom={isBack}
-              initial={false}
-              onExitComplete={toggleLeaving}
-            >
-              <Row
+          <SliderContainer>
+            <SliderControl>
+              <Span1>지금 뜨는 영화</Span1>
+              <PlayBtn onClick={handleChangeSound}>
+                <span>{isSound === "0" ? "Sound On" : "Sound Off"}</span>
+              </PlayBtn>
+            </SliderControl>
+            <Slider>
+              <PageChange>
+                <Decrease whileHover={{ scale: 1.3 }} onClick={decreaseIndex}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                    viewBox="0 0 512 512"
+                    width="30px"
+                    height="30px"
+                  >
+                    <g>
+                      <path
+                        d="M221.568,255.359L394.373,82.553c18.821-18.82,18.821-49.617,0-68.438s-51.328-18.821-68.438,0L117.2,221.14    c-8.554,8.554-13.688,22.243-13.688,34.219c0,13.688,5.133,25.665,13.688,34.219l207.024,208.735    c8.555,8.555,22.242,13.688,34.219,13.688c13.688,0,25.665-5.132,34.219-13.688c18.821-18.82,18.821-49.617,0-68.438    L221.568,255.359z M370.419,472.648c-5.132,5.132-15.398,5.132-20.531,0L141.153,265.625c-3.422-3.422-5.133-6.844-5.133-10.266    c0-3.422,1.711-6.844,5.133-10.266L349.888,38.069c1.711-3.422,5.132-5.132,10.266-5.132s6.844,1.711,10.266,5.132    c5.132,5.132,5.132,15.398,0,20.531L183.927,243.382c-3.422,3.422-5.133,6.844-5.133,11.976c0,5.132,1.711,8.555,5.133,11.977    l184.782,184.782C375.553,458.961,375.553,467.516,370.419,472.648z"
+                        data-original="#000000"
+                        data-old_color="#000000"
+                        fill="#FFFFFF"
+                      />
+                    </g>
+                  </svg>
+                </Decrease>
+                <Increase whileHover={{ scale: 1.3 }} onClick={increaseIndex}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                    viewBox="0 0 512 512"
+                    width="30px"
+                    height="30px"
+                  >
+                    <g>
+                      <path
+                        d="M394.8,222.851L186.065,14.116c-18.821-18.821-51.328-18.821-68.438,0c-18.82,18.821-18.82,49.617,0,68.438    L290.433,257.07L117.628,429.875c-18.82,18.821-18.82,49.618,0,68.438C126.183,506.868,139.87,512,151.846,512    c11.976,0,25.665-5.132,34.219-13.688L394.8,291.288c8.555-8.555,13.688-22.242,13.688-34.219    C408.488,245.093,403.355,231.406,394.8,222.851z M370.847,267.335L163.823,474.36c-5.133,5.132-15.398,5.132-20.531,0    c-5.133-5.132-5.133-15.399,0-20.531l184.782-184.782c6.844-6.844,6.844-17.109,0-23.953L141.581,60.312    c-5.133-6.844-5.133-15.399,0-20.531c3.422-3.422,6.844-5.132,10.266-5.132c3.422,0,6.844,1.71,10.266,5.132l208.735,208.735    c3.422,3.422,5.132,6.844,5.132,10.266C374.269,260.491,372.558,265.625,370.847,267.335z"
+                        data-original="#000000"
+                        data-old_color="#000000"
+                        fill="#FFFFFF"
+                      />
+                    </g>
+                  </svg>
+                </Increase>
+              </PageChange>
+              <AnimatePresence
                 custom={isBack}
-                variants={rowVars}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                transition={{ type: "tween", duration: 1 }}
-                key={index}
+                initial={false}
+                onExitComplete={toggleLeaving}
               >
-                {info?.results
-                  ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
-                  .map((movie) => {
-                    return (
-                      <Box
-                        layoutId={movie.id + ""}
-                        key={movie.id}
-                        onClick={() => onClickBox(movie.id)}
-                        whileHover="hover"
-                        initial="normal"
-                        variants={boxVars}
-                        transition={{ type: "tween" }}
-                        bgimg={makeImagePath(movie.backdrop_path || "")}
-                      >
-                        <Info variants={infoVars}>
-                          <h4>{movie.title}</h4>
-                        </Info>
-                      </Box>
-                    );
-                  })}
-              </Row>
-            </AnimatePresence>
-          </Slider>
+                <Row
+                  custom={isBack}
+                  variants={rowVars}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ type: "tween", duration: 1 }}
+                  key={index}
+                >
+                  {info?.results
+                    ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
+                    .map((movie) => {
+                      return (
+                        <Box
+                          layoutId={movie.id + ""}
+                          key={movie.id}
+                          onClick={() => onClickBox(movie.id)}
+                          whileHover="hover"
+                          initial="normal"
+                          variants={boxVars}
+                          transition={{ type: "tween" }}
+                          bgimg={makeImagePath(movie.backdrop_path || "")}
+                        >
+                          <Info variants={infoVars}>
+                            <h4>{movie.title}</h4>
+                          </Info>
+                        </Box>
+                      );
+                    })}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </SliderContainer>
           <AnimatePresence>
             {movieMatch && (
               <>
@@ -348,9 +408,6 @@ const Home = () => {
                 >
                   {clickMovie && (
                     <DetailContainer>
-                      <MovieCover
-                        bgimg={makeImagePath(clickMovie.backdrop_path)}
-                      />
                       <HometoDetail />
                     </DetailContainer>
                   )}

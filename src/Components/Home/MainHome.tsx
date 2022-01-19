@@ -4,12 +4,23 @@ import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../../Api/api";
 
 const Body = styled.div`
-  min-width: 1375px;
+  min-width: 1400px;
   max-height: 100vh;
+  word-break: keep-all;
+`;
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
   background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg");
-  background-size: cover;
-  background-position-y: -300px;
-  background-repeat: no-repeat;
+`;
+
+const MainOpacity = styled.div`
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.8)
+  );
 `;
 
 const MainHeader = styled.div`
@@ -57,6 +68,7 @@ const LoginBox = styled.div`
   align-items: center;
   justify-content: center;
   button {
+    cursor: pointer;
     width: 100px;
     height: 40px;
     font-size: 18px;
@@ -67,18 +79,6 @@ const LoginBox = styled.div`
   }
 `;
 
-const Banner = styled.div`
-  width: 100%;
-  height: 85vh;
-  top: 0;
-  position: absolute;
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.5)
-  );
-`;
-
 const SectionWrapper = styled.div`
   width: 100%;
   height: 65vh;
@@ -86,10 +86,12 @@ const SectionWrapper = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: 8px solid #222;
+  position: relative;
+  z-index: 3000;
 `;
 
 const SectionContainer = styled.div`
-  width: 40%;
+  min-width: 700px;
   height: 40vh;
   position: absolute;
   display: flex;
@@ -109,7 +111,7 @@ const SectionContainer = styled.div`
 
 const SectionBtnContainer = styled.div`
   width: 300px;
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +120,7 @@ const SectionBtnContainer = styled.div`
 const SectionBtnBox = styled(Link)`
   width: 80%;
   height: 80%;
-  font-size: 40px;
+  font-size: 35px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -146,8 +148,7 @@ const PlayBox = styled.div`
 `;
 
 const TextContainer = styled.div`
-  width: 45%;
-  height: 80%;
+  min-width: 650px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,7 +163,7 @@ const TextContainer = styled.div`
 `;
 
 const VideoContainer = styled.div`
-  min-width: 45%;
+  min-width: 400px;
   max-height: 100%;
   position: relative;
   overflow: hidden;
@@ -170,10 +171,10 @@ const VideoContainer = styled.div`
 
 const VideoImg = styled.img`
   max-width: 100%;
+  max-height: 100%;
   border: 0;
   position: relative;
   z-index: 2;
-  overflow: hidden;
 `;
 
 const VideoWrapper = styled.div`
@@ -196,34 +197,39 @@ const Customer = () => {
         "Loading"
       ) : (
         <Body>
-          <MainHeader>
-            <HeaderWrapper>
-              <LogoBox>
-                <span>Charleyfilx</span>
-              </LogoBox>
-              <LoginBtnBox>
-                <LoginBox>
-                  <button>로그인</button>
-                </LoginBox>
-              </LoginBtnBox>
-            </HeaderWrapper>
-          </MainHeader>
-          <Banner />
-          <SectionWrapper>
-            <SectionContainer>
-              <h1>
-                영화와 시리즈를 <br /> 무제한으로.
-              </h1>
-              <h4>
-                다양한 디바이스에서 시청하세요. 언제든 해지하실 수 있습니다.
-              </h4>
-              <SectionBtnContainer>
-                <SectionBtnBox to="/movies">
-                  <SectionBtn>시작하기 &#62;</SectionBtn>
-                </SectionBtnBox>
-              </SectionBtnContainer>
-            </SectionContainer>
-          </SectionWrapper>
+          <MainContainer>
+            <MainOpacity>
+              <MainHeader>
+                <HeaderWrapper>
+                  <LogoBox>
+                    <span>Charleyfilx</span>
+                  </LogoBox>
+                  <LoginBtnBox>
+                    <LoginBox>
+                      <a href="https://www.netflix.com/kr/login">
+                        <button>로그인</button>
+                      </a>
+                    </LoginBox>
+                  </LoginBtnBox>
+                </HeaderWrapper>
+              </MainHeader>
+              <SectionWrapper>
+                <SectionContainer>
+                  <h1>
+                    영화와 시리즈를 <br /> 무제한으로.
+                  </h1>
+                  <h4>
+                    다양한 디바이스에서 시청하세요. 언제든 해지하실 수 있습니다.
+                  </h4>
+                  <SectionBtnContainer>
+                    <SectionBtnBox to="/movies">
+                      <SectionBtn>시작하기 &#62;</SectionBtn>
+                    </SectionBtnBox>
+                  </SectionBtnContainer>
+                </SectionContainer>
+              </SectionWrapper>
+            </MainOpacity>
+          </MainContainer>
           <PlayContainer>
             <PlayBox>
               <TextContainer>

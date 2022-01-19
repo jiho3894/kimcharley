@@ -5,7 +5,7 @@ import { makeImagePath } from "../../Api/utils";
 import { Box, boxVars, Info, infoVars } from "../Home/Home";
 
 const Tv = () => {
-  const { isLoading, data } = useQuery<IGetTVResult>("Upcoming", getTv);
+  const { isLoading, data } = useQuery<IGetTVResult>("TV", getTv);
   return (
     <>
       {isLoading
@@ -23,7 +23,7 @@ const Tv = () => {
                   <Info variants={infoVars}>
                     <h4>{tv.original_name}</h4>
                   </Info>
-                </Box> 
+                </Box>
               </Link>
             );
           })}

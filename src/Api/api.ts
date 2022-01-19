@@ -42,8 +42,19 @@ interface ITVTrailer {
   id: string;
 }
 
+interface IGenres {
+  name: string;
+}
+
+interface ICompanies {
+  logo_path: string;
+}
+
+interface ILanguages {
+  name: string;
+}
+
 export interface IGetMoviesResult {
-  page: number;
   results: IMovie[];
 }
 
@@ -51,12 +62,15 @@ export interface IGetMoviesDetail {
   adult: boolean;
   backdrop_path: string;
   homepage: string;
-  id: number;
   original_title: string;
   overview: string;
   poster_path: string;
   release_date: string;
+  runtime: number;
   vote_average: number;
+  genres: IGenres[];
+  production_companies: ICompanies[];
+  spoken_languages: ILanguages[];
 }
 
 export interface IGetMoviesTrailer {
@@ -81,13 +95,21 @@ export interface IGetTVDetail {
   vote_average: number;
 }
 
+export interface IMoiveSimilar {
+  backdrop_path: string;
+  original_title: string;
+}
+
 export interface IGetTVTrailer {
-  id: string;
   results: ITVTrailer[];
 }
 
 export interface IGetSearchResult {
   results: ISearch[];
+}
+
+export interface IGetMovieSimilar {
+  results: IMoiveSimilar[];
 }
 
 export const getMovies = () => {
@@ -98,7 +120,7 @@ export const getMovies = () => {
 
 export const getMoviesDetail = (movieId?: string) => {
   return fetch(
-    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US`
+    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`
   ).then((response) => response.json());
 };
 
@@ -121,9 +143,9 @@ export const getTv = () => {
 };
 
 export const getTVDetail = (tvId?: string) => {
-  return fetch(
-    `${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=en-US`
-  ).then((response) => response.json());
+  return fetch(`${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=en-US`).then(
+    (response) => response.json()
+  );
 };
 
 export const getTvTrailer = (tvId?: string) => {
@@ -135,5 +157,11 @@ export const getTvTrailer = (tvId?: string) => {
 export const getSearch = (query?: string) => {
   return fetch(
     `${BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=true`
+  ).then((response) => response.json());
+};
+
+export const getMovieSimilar = (movieId?: string) => {
+  return fetch(
+    `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`
   ).then((response) => response.json());
 };
