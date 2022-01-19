@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../../Api/api";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Loading from "../../Routes/Loading";
 
 const Body = styled.div`
   min-width: 1400px;
@@ -196,7 +198,7 @@ const Customer = () => {
   return (
     <>
       {isLoading ? (
-        "Loading"
+        <Loading/>
       ) : (
         <Body>
           <MainContainer>
@@ -227,7 +229,9 @@ const Customer = () => {
                   <h4>다양한 디바이스에서 시청하세요. 찰리는 다 가능합니다.</h4>
                   <SectionBtnContainer>
                     <SectionBtnBox to="/movies">
-                      <SectionBtn>시작하기 &#62;</SectionBtn>
+                      <SectionBtn>
+                        시작하기 <ArrowForwardIosIcon fontSize="medium" />
+                      </SectionBtn>
                     </SectionBtnBox>
                   </SectionBtnContainer>
                 </SectionContainer>

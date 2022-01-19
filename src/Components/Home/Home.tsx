@@ -13,6 +13,7 @@ import {
 } from "../../Api/api";
 import { makeImagePath, makeTrailerPath } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
+import Loading from "../../Routes/Loading";
 import HometoDetail from "./HomeDetail";
 
 const Wrapper = styled.div`
@@ -22,17 +23,14 @@ const Wrapper = styled.div`
   height: 80vh;
 `;
 
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const PlayContainer = styled.div`
-  width: 100%;
-  height: 85vh;
+  min-width: 100%;
+  height: 80vh;
   background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 `;
 
 const Banner = styled.div`
@@ -58,6 +56,7 @@ export const SliderControl = styled(motion.div)`
   color: white;
   margin-bottom: 5px;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const Span1 = styled(motion.span)`
@@ -70,7 +69,7 @@ export const Span1 = styled(motion.span)`
 
 const PlayBtn = styled(motion.button)`
   font-size: 15px;
-  height: 20px;
+  height: 30px;
   border-radius: 5px;
   font-weight: 600;
   border: none;
@@ -83,6 +82,7 @@ const PageChange = styled.div`
   height: 400px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   position: absolute;
 `;
 
@@ -94,7 +94,8 @@ export const Increase = styled(motion.div)`
   justify-content: center;
   z-index: 3;
   background-color: black;
-  opacity: 0.8;
+  opacity: 0.7;
+  transform-origin: center right;
 `;
 
 export const Decrease = styled(motion.div)`
@@ -105,7 +106,7 @@ export const Decrease = styled(motion.div)`
   justify-content: center;
   z-index: 3;
   background-color: black;
-  opacity: 0.8;
+  opacity: 0.7;
 `;
 
 export const Slider = styled.div`
@@ -220,7 +221,7 @@ export const boxVars = {
     scale: 1.3,
     y: -80,
     transition: {
-      delay: 0.5,
+      delay: 0.3,
       duaration: 0.1,
       type: "tween",
     },
@@ -303,7 +304,7 @@ const Home = () => {
   return (
     <Wrapper>
       {infoLoading ? (
-        <Loader>Loading...</Loader>
+        <Loading />
       ) : (
         <>
           <PlayContainer>
@@ -314,8 +315,8 @@ const Home = () => {
               playing={pause ? false : true}
               muted={isSound === "0" ? true : false}
               loop={true}
-              width="100%"
-              height="calc(100vh - 80px)"
+              width="200vw"
+              height="calc(110vh)"
             ></ReactPlayer>
           </PlayContainer>
           <Banner />
@@ -328,7 +329,7 @@ const Home = () => {
             </SliderControl>
             <Slider>
               <PageChange>
-                <Decrease whileHover={{ scale: 1.3 }} onClick={decreaseIndex}>
+                <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseIndex}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     version="1.1"
@@ -346,7 +347,7 @@ const Home = () => {
                     </g>
                   </svg>
                 </Decrease>
-                <Increase whileHover={{ scale: 1.3 }} onClick={increaseIndex}>
+                <Increase whileHover={{ scale: 1.2 }} onClick={increaseIndex}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     version="1.1"

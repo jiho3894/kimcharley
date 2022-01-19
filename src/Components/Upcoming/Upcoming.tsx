@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { getUpcoming, IGetMoviesResult } from "../../Api/api";
 import { makeImagePath } from "../../Api/utils";
+import Loading from "../../Routes/Loading";
 import { Box, boxVars, Info, infoVars } from "../Home/Home";
 
 const Upcoming = () => {
@@ -11,8 +12,8 @@ const Upcoming = () => {
   );
   return (
     <>
-      {isLoading
-        ? "Loading"
+      {!isLoading
+        ? <Loading/>
         : data?.results.map((upcoming) => {
             return (
               <Link key={upcoming.id} to={`/upcoming/${upcoming.id}`}>

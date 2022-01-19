@@ -7,6 +7,7 @@ import MainHome from "../Components/Home/MainHome";
 import TvDetail from "../Components/Detail/TVDetail";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
+import MovieDetail from "../Components/Detail/MovieDetail";
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/movies" element={<Home />}>
           <Route path=":movieId" element={<Home />} />
         </Route>
+        <Route path="/movies/Detail/:movieId" element={<MovieDetail />} />
         <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/upcoming/:upcomingId" element={<UpcomingDetail />} />
         <Route path="/tv" element={<TV />} />

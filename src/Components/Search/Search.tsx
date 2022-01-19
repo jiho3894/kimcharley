@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { Link, useLocation } from "react-router-dom";
 import { getSearch, IGetSearchResult } from "../../Api/api";
 import { makeImagePath } from "../../Api/utils";
+import Loading from "../../Routes/Loading";
 import { Box, boxVars, Info, infoVars } from "../Home/Home";
 
 const Search = () => {
@@ -13,7 +14,7 @@ const Search = () => {
   return (
     <>
       {isLoading
-        ? "loading"
+        ? <Loading/>
         : data?.results.map((search) => (
             <Link key={search.id} to={`/movies/Detail/${search.id}`}>
               <Box

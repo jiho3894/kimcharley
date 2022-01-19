@@ -19,6 +19,7 @@ import Rating from "@mui/material/Rating";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+import Loading from "../../Routes/Loading";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -283,7 +284,7 @@ const HomeDetail = () => {
   return (
     <Container>
       {isLoading ? (
-        "Loading"
+        <Loading />
       ) : (
         <>
           {movieMatch && (
@@ -311,7 +312,9 @@ const HomeDetail = () => {
                   </BannerBackContainer>
                   <BannerFooterBox>
                     <BannerFooter>
-                      <BannerPlayBtn onClick={() => alert("로그인 후 이용 가능합니다.")}>
+                      <BannerPlayBtn
+                        onClick={() => alert("로그인 후 이용 가능합니다.")}
+                      >
                         <DoubleArrowIcon />
                         Play
                       </BannerPlayBtn>
