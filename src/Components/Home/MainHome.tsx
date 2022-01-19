@@ -43,13 +43,15 @@ const LogoBox = styled.div`
   width: 15rem;
   height: 80px;
   margin: 5px;
-  color: red;
   display: flex;
   align-items: center;
   justify-content: center;
   span {
     font-size: 40px;
     font-weight: 600;
+  }
+  a {
+    color: red;
   }
 `;
 
@@ -202,7 +204,11 @@ const Customer = () => {
               <MainHeader>
                 <HeaderWrapper>
                   <LogoBox>
-                    <span>Charleyfilx</span>
+                    <span>
+                      <a href="https://github.com/jiho3894/kimcharley">
+                        Charleyflix
+                      </a>
+                    </span>
                   </LogoBox>
                   <LoginBtnBox>
                     <LoginBox>
@@ -218,9 +224,7 @@ const Customer = () => {
                   <h1>
                     영화와 시리즈를 <br /> 무제한으로.
                   </h1>
-                  <h4>
-                    다양한 디바이스에서 시청하세요. 언제든 해지하실 수 있습니다.
-                  </h4>
+                  <h4>다양한 디바이스에서 시청하세요. 찰리는 다 가능합니다.</h4>
                   <SectionBtnContainer>
                     <SectionBtnBox to="/movies">
                       <SectionBtn>시작하기 &#62;</SectionBtn>

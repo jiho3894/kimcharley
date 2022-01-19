@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 const Head = styled(motion.header)`
   width: 100%;
@@ -32,7 +33,7 @@ const logoVars = {
 };
 
 const Container = styled.div`
-  width: 82%;
+  width: 85%;
   display: flex;
   justify-content: space-between;
   color: white;
@@ -53,11 +54,9 @@ const SLink = styled(Link)`
 `;
 
 const BList = styled.div`
-  width: 240px;
+  width: 300px;
   display: flex;
   align-items: center;
-  /**/
-  display: none;
 `;
 
 const Circle = styled(motion.span)`
@@ -79,11 +78,12 @@ const SearchContainer = styled.form`
 const SearchInput = styled(motion.input)`
   transform-origin: right center;
   position: absolute;
+  margin-left: 10px;
 `;
 
 const SearchLogo = styled(motion.svg)`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   position: absolute;
   path {
     stroke-width: 2;
@@ -199,6 +199,7 @@ const Header = () => {
               ></path>
             </SearchLogo>
           </SearchContainer>
+          <AssignmentIndIcon fontSize="large" />
         </BList>
       </Container>
     </Head>

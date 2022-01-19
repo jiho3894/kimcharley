@@ -17,7 +17,8 @@ import HometoDetail from "./HomeDetail";
 
 const Wrapper = styled.div`
   background: black;
-  width: 100%;
+  min-width: 1400px;
+  max-height: 100vh;
   height: 80vh;
 `;
 
@@ -86,21 +87,25 @@ const PageChange = styled.div`
 `;
 
 export const Increase = styled(motion.div)`
-  width: 100px;
+  width: 40px;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
+  background-color: black;
+  opacity: 0.8;
 `;
 
 export const Decrease = styled(motion.div)`
-  width: 100px;
+  width: 40px;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
+  background-color: black;
+  opacity: 0.8;
 `;
 
 export const Slider = styled.div`
@@ -116,7 +121,7 @@ export const Row = styled(motion.div)`
   gap: 3px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
-  width: 95%;
+  width: 97%;
   opacity: 0.9;
 `;
 
@@ -316,7 +321,7 @@ const Home = () => {
           <Banner />
           <SliderContainer>
             <SliderControl>
-              <Span1>지금 뜨는 영화</Span1>
+              <Span1>Charleyflix 인기 콘텐츠</Span1>
               <PlayBtn onClick={handleChangeSound}>
                 <span>{isSound === "0" ? "Sound On" : "Sound Off"}</span>
               </PlayBtn>

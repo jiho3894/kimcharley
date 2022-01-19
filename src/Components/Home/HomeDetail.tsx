@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
-import { useMatch } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   getMoviesDetail,
@@ -13,6 +13,12 @@ import {
   IGetMoviesTrailer,
 } from "../../Api/api";
 import { makeImagePath, makeTrailerPath } from "../../Api/utils";
+import Stack from "@mui/material/Stack";
+import CloseIcon from "@mui/icons-material/Close";
+import Rating from "@mui/material/Rating";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -30,20 +36,82 @@ const DetailPlayContainer = styled.div`
   width: 100%;
   height: 300px;
   position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Banner = styled.div`
   width: 100%;
   height: 300px;
   background: linear-gradient(
-    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.3),
     rgba(0, 0, 0, 0.5)
   );
   position: absolute;
   top: 0;
   display: flex;
+  flex-direction: column;
   align-items: flex-end;
+  justify-content: space-between;
+`;
+
+const BannerBackContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BannerBackBox = styled.div`
+  width: 95%;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const BannerBack = styled(motion.div)`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  background-color: #2c3e50;
+  border-radius: 50%;
+`;
+
+const BannerFooterBox = styled.footer`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+`;
+
+const BannerFooter = styled.footer`
+  width: 95%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const BannerPlayBtn = styled.button`
+  width: 150px;
+  font-size: 30px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 0;
+`;
+
+const BannerVolum = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #474f56;
 `;
 
 const DetailBanner = styled.div<{ bgimg?: string }>`
@@ -91,8 +159,9 @@ const OverviewBox = styled.div`
   flex-direction: column;
   align-content: space-between;
   overflow-y: scroll;
+  margin-right: 3px;
   &::-webkit-scrollbar {
-    width: 12px;
+    width: 5px;
     border-radius: 50px;
   }
   &::-webkit-scrollbar-thumb {
@@ -133,14 +202,15 @@ const WrapperColor = styled.div`
 
 const GenresContainer = styled.div`
   width: 100%;
-  height: 50%;
+  height: 55%;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const Companies = styled.div`
   width: 100%;
-  height: 50%;
+  height: 45%;
   display: flex;
   padding-left: 20px;
 `;
@@ -172,7 +242,10 @@ const SemiHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  span {
+    font-size: 30px;
+    font-weight: 600;
+  }
 `;
 
 const SemiBox = styled.div`
@@ -192,6 +265,8 @@ const Similar = styled(motion.div)<{ bgimg: string }>`
 
 const HomeDetail = () => {
   const movieMatch = useMatch(`/movies/:movieId`);
+  const navigate = useNavigate();
+  const [volum, setVolum] = useState(false);
   const { isLoading, data } = useQuery<IGetMoviesTrailer>("Movietrailer", () =>
     getMoviesTrailer(movieMatch?.params.movieId)
   );
@@ -201,6 +276,10 @@ const HomeDetail = () => {
   const { data: similar } = useQuery<IGetMovieSimilar>("MovieSimilar", () =>
     getMovieSimilar(movieMatch?.params.movieId)
   );
+  const onClick = () => {
+    navigate("/movies");
+  };
+  const volumClick = () => setVolum((prev) => !prev);
   return (
     <Container>
       {isLoading ? (
@@ -212,13 +291,35 @@ const HomeDetail = () => {
               <DetailPlayContainer>
                 <ReactPlayer
                   url={makeTrailerPath(data?.results[0].key)}
-                  volume={0.2}
+                  volume={volum ? 0.2 : 0}
                   playing={true}
-                  width="100%"
-                  height="300px"
+                  loop={true}
+                  width="150%"
+                  height="600px"
+                  style={{ scale: 1.5 }}
                 ></ReactPlayer>
                 <Banner>
-                  <button>재생</button>
+                  <BannerBackContainer>
+                    <BannerBackBox>
+                      <BannerBack
+                        onClick={onClick}
+                        whileHover={{ rotate: "90deg" }}
+                      >
+                        <CloseIcon fontSize="large"></CloseIcon>
+                      </BannerBack>
+                    </BannerBackBox>
+                  </BannerBackContainer>
+                  <BannerFooterBox>
+                    <BannerFooter>
+                      <BannerPlayBtn onClick={() => alert("로그인 후 이용 가능합니다.")}>
+                        <DoubleArrowIcon />
+                        Play
+                      </BannerPlayBtn>
+                      <BannerVolum onClick={volumClick}>
+                        {volum ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                      </BannerVolum>
+                    </BannerFooter>
+                  </BannerFooterBox>
                 </Banner>
               </DetailPlayContainer>
               <DetailBanner bgimg={makeImagePath(info?.backdrop_path || "")} />
@@ -228,7 +329,21 @@ const HomeDetail = () => {
                 </TitleContainer>
                 <ReleaseContainer>
                   <span>{info?.release_date} / </span>
-                  <span>⭐{info?.vote_average} / </span>
+                  <span>
+                    <Stack spacing={1}>
+                      <Rating
+                        name="half-rating-read"
+                        defaultValue={
+                          info?.vote_average === undefined
+                            ? 3.0
+                            : Math.floor(Number(info?.vote_average))
+                        }
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                      />
+                    </Stack>
+                  </span>
                   <span>&nbsp;{info?.runtime}min / </span>
                   <span>&nbsp;{info?.spoken_languages[0].name}</span>
                   <span style={{ color: "red" }}>
