@@ -132,7 +132,11 @@ const SectionBtnBox = styled(Link)`
   background-color: red;
 `;
 
-const SectionBtn = styled.span``;
+const SectionBtn = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const PlayContainer = styled.div`
   width: 100%;
@@ -198,7 +202,7 @@ const Customer = () => {
   return (
     <>
       {isLoading ? (
-        <Loading/>
+        <Loading />
       ) : (
         <Body>
           <MainContainer>

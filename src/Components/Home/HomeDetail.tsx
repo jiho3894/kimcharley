@@ -14,7 +14,7 @@ import {
 } from "../../Api/api";
 import { makeImagePath, makeTrailerPath } from "../../Api/utils";
 import Stack from "@mui/material/Stack";
-import CloseIcon from "@mui/icons-material/Close";
+import CancelIcon from "@mui/icons-material/Cancel";
 import Rating from "@mui/material/Rating";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -61,17 +61,19 @@ const Banner = styled.div`
 
 const BannerBackContainer = styled.div`
   width: 100%;
-  height: 50px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 
 const BannerBackBox = styled.div`
   width: 95%;
-  height: 30px;
   display: flex;
   justify-content: flex-end;
+  z-index: 10;
+  position: absolute;
 `;
 
 const BannerBack = styled(motion.div)`
@@ -203,7 +205,7 @@ const WrapperColor = styled.div`
 
 const GenresContainer = styled.div`
   width: 100%;
-  height: 55%;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,7 +213,7 @@ const GenresContainer = styled.div`
 
 const Companies = styled.div`
   width: 100%;
-  height: 45%;
+  height: 60px;
   display: flex;
   padding-left: 20px;
 `;
@@ -306,7 +308,7 @@ const HomeDetail = () => {
                         onClick={onClick}
                         whileHover={{ rotate: "90deg" }}
                       >
-                        <CloseIcon fontSize="large"></CloseIcon>
+                        <CancelIcon fontSize="large"></CancelIcon>
                       </BannerBack>
                     </BannerBackBox>
                   </BannerBackContainer>
@@ -364,9 +366,7 @@ const HomeDetail = () => {
                       <GenresContainer>
                         {info?.genres.slice(0, 3).map((genres) => {
                           return (
-                            <span key={genres.name}>
-                              &nbsp;{genres.name} /{" "}
-                            </span>
+                            <span key={genres.name}>&nbsp;{genres.name} /</span>
                           );
                         })}
                       </GenresContainer>
