@@ -15,7 +15,7 @@ const Head = styled(motion.header)`
   z-index: 3000;
 `;
 
-const NetflixLogo = styled(motion.svg)`
+export const NetflixLogo = styled(motion.svg)`
   width: 120px;
   height: 60px;
   path {
@@ -24,7 +24,7 @@ const NetflixLogo = styled(motion.svg)`
   }
 `;
 
-const logoVars = {
+export const logoVars = {
   start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
   end: {
     fill: "rgba(255, 0, 0, 1)",
@@ -101,7 +101,7 @@ const bodyVariants = {
     backgroundColor: "rgba(0, 0, 0, 1)",
   },
   scroll: {
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: 3000,
   },
 };
@@ -189,7 +189,7 @@ const Header = () => {
               {...register("query", { required: true, minLength: 2 })}
               transition={{ type: "linear" }}
               animate={{ scaleX: search ? 1 : 0 }}
-              placeholder="search moive..."
+              placeholder="검색어를 입력해주세요"
               type="text"
             />
             <SearchLogo

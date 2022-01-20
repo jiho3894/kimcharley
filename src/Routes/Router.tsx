@@ -4,10 +4,10 @@ import Search from "../Components/Search/Search";
 import TV from "../Components/Tv/Tv";
 import Header from "./Header";
 import MainHome from "../Components/Home/MainHome";
-import TvDetail from "../Components/Detail/TVDetail";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
 import MovieDetail from "../Components/Detail/MovieDetail";
+import TVDetail from "../Components/Detail/TVDetail";
 
 const Router = () => {
   return (
@@ -22,7 +22,7 @@ const Router = () => {
         <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/upcoming/:upcomingId" element={<UpcomingDetail />} />
         <Route path="/tv" element={<TV />} />
-        <Route path="/tv/Detail/:tvId" element={<TvDetail />} />
+        <Route path="/tv/:tvId" element={<TVDetail />} />
         <Route path="/search/*" element={<Search />} />
       </Routes>
     </HashRouter>

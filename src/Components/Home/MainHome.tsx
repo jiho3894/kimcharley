@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../../Api/api";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Loading from "../../Routes/Loading";
+import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
   min-width: 1400px;

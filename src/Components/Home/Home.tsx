@@ -13,13 +13,17 @@ import {
 } from "../../Api/api";
 import { makeImagePath, makeTrailerPath } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
-import Loading from "../../Routes/Loading";
+import Loading from "../../Styles/Loading";
 import HometoDetail from "./HomeDetail";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import UpcomingSlider from "./UpcomingSlider";
+import TVSlider from "./TVSlider";
 
 const Wrapper = styled.div`
   background: black;
   min-width: 1400px;
-  max-height: 100vh;
+  height: 100vh;
   height: 80vh;
 `;
 
@@ -45,7 +49,7 @@ const Banner = styled.div`
 `;
 
 export const SliderContainer = styled(motion.div)`
-  height: 50vh;
+  height: 500px;
   width: 100%;
 `;
 
@@ -87,25 +91,21 @@ const PageChange = styled.div`
 `;
 
 export const Increase = styled(motion.div)`
-  width: 40px;
+  width: 50px;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
-  background-color: black;
-  opacity: 0.7;
   transform-origin: center right;
 `;
 
 export const Decrease = styled(motion.div)`
-  width: 40px;
+  width: 50px;
   height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
-  background-color: black;
   opacity: 0.7;
 `;
 
@@ -181,7 +181,7 @@ export const DetailContainer = styled(motion.div)`
   position: relative;
   overflow-y: scroll;
   &::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
     border-radius: 50px;
     background: black;
   }
@@ -217,12 +217,11 @@ export const boxVars = {
     scale: 1,
   },
   hover: {
-    zIndex: 99,
-    scale: 1.3,
-    y: -80,
+    zIndex: 2000,
+    scale: 1.1,
+    y: -40,
     transition: {
-      delay: 0.3,
-      duaration: 0.1,
+      delay: 0.1,
       type: "tween",
     },
   },
@@ -330,40 +329,10 @@ const Home = () => {
             <Slider>
               <PageChange>
                 <Decrease whileHover={{ scale: 1.2 }} onClick={decreaseIndex}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    version="1.1"
-                    viewBox="0 0 512 512"
-                    width="30px"
-                    height="30px"
-                  >
-                    <g>
-                      <path
-                        d="M221.568,255.359L394.373,82.553c18.821-18.82,18.821-49.617,0-68.438s-51.328-18.821-68.438,0L117.2,221.14    c-8.554,8.554-13.688,22.243-13.688,34.219c0,13.688,5.133,25.665,13.688,34.219l207.024,208.735    c8.555,8.555,22.242,13.688,34.219,13.688c13.688,0,25.665-5.132,34.219-13.688c18.821-18.82,18.821-49.617,0-68.438    L221.568,255.359z M370.419,472.648c-5.132,5.132-15.398,5.132-20.531,0L141.153,265.625c-3.422-3.422-5.133-6.844-5.133-10.266    c0-3.422,1.711-6.844,5.133-10.266L349.888,38.069c1.711-3.422,5.132-5.132,10.266-5.132s6.844,1.711,10.266,5.132    c5.132,5.132,5.132,15.398,0,20.531L183.927,243.382c-3.422,3.422-5.133,6.844-5.133,11.976c0,5.132,1.711,8.555,5.133,11.977    l184.782,184.782C375.553,458.961,375.553,467.516,370.419,472.648z"
-                        data-original="#000000"
-                        data-old_color="#000000"
-                        fill="#FFFFFF"
-                      />
-                    </g>
-                  </svg>
+                  <ArrowBackIosIcon fontSize="large" />
                 </Decrease>
                 <Increase whileHover={{ scale: 1.2 }} onClick={increaseIndex}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    version="1.1"
-                    viewBox="0 0 512 512"
-                    width="30px"
-                    height="30px"
-                  >
-                    <g>
-                      <path
-                        d="M394.8,222.851L186.065,14.116c-18.821-18.821-51.328-18.821-68.438,0c-18.82,18.821-18.82,49.617,0,68.438    L290.433,257.07L117.628,429.875c-18.82,18.821-18.82,49.618,0,68.438C126.183,506.868,139.87,512,151.846,512    c11.976,0,25.665-5.132,34.219-13.688L394.8,291.288c8.555-8.555,13.688-22.242,13.688-34.219    C408.488,245.093,403.355,231.406,394.8,222.851z M370.847,267.335L163.823,474.36c-5.133,5.132-15.398,5.132-20.531,0    c-5.133-5.132-5.133-15.399,0-20.531l184.782-184.782c6.844-6.844,6.844-17.109,0-23.953L141.581,60.312    c-5.133-6.844-5.133-15.399,0-20.531c3.422-3.422,6.844-5.132,10.266-5.132c3.422,0,6.844,1.71,10.266,5.132l208.735,208.735    c3.422,3.422,5.132,6.844,5.132,10.266C374.269,260.491,372.558,265.625,370.847,267.335z"
-                        data-original="#000000"
-                        data-old_color="#000000"
-                        fill="#FFFFFF"
-                      />
-                    </g>
-                  </svg>
+                  <ArrowForwardIosIcon fontSize="large" />
                 </Increase>
               </PageChange>
               <AnimatePresence
@@ -404,6 +373,8 @@ const Home = () => {
               </AnimatePresence>
             </Slider>
           </SliderContainer>
+          <UpcomingSlider />
+          <TVSlider />
           <AnimatePresence>
             {movieMatch && (
               <>

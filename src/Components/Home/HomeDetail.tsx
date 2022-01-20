@@ -19,7 +19,7 @@ import Rating from "@mui/material/Rating";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
-import Loading from "../../Routes/Loading";
+import Loading from "../../Styles/Loading";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -114,7 +114,7 @@ const BannerVolum = styled.button`
   height: 40px;
   border-radius: 50%;
   border: 0;
-  background-color: #474f56;
+  background-color: #9ca7b2;
 `;
 
 const DetailBanner = styled.div<{ bgimg?: string }>`
@@ -161,8 +161,8 @@ const OverviewBox = styled.div`
   display: flex;
   flex-direction: column;
   align-content: space-between;
-  overflow-y: scroll;
   margin-right: 3px;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     width: 5px;
     border-radius: 50px;

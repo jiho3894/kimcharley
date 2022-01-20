@@ -88,7 +88,7 @@ export interface IGetTVDetail {
   backdrop_path: string;
   homepage: string;
   id: number;
-  original_title: string;
+  original_name: string;
   overview: string;
   poster_path: string;
   first_air_date: string;

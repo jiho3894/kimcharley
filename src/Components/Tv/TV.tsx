@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { getTv, IGetTVResult } from "../../Api/api";
 import { makeImagePath } from "../../Api/utils";
-import Loading from "../../Routes/Loading";
+import Loading from "../../Styles/Loading";
 import { Box, boxVars, Info, infoVars } from "../Home/Home";
 
 const Tv = () => {
