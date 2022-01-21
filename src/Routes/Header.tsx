@@ -1,9 +1,12 @@
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import Input from "@mui/material/Input";
+
+const ariaLabel = { "aria-label": "description" };
 
 const Head = styled(motion.header)`
   min-width: 1400px;
@@ -33,7 +36,7 @@ export const logoVars = {
 };
 
 const Container = styled.div`
-  width: 90%;
+  width: 95%;
   display: flex;
   justify-content: space-between;
   color: white;
@@ -46,7 +49,7 @@ const Box = styled.div`
 `;
 
 const AList = styled.div`
-  width: 90%;
+  width: 95%;
   display: flex;
   margin-left: 50px;
   align-items: center;
@@ -60,7 +63,7 @@ const SLink = styled(Link)`
 `;
 
 const BList = styled.div`
-  width: 400px;
+  width: 350px;
   display: flex;
   align-items: center;
 `;
@@ -81,16 +84,9 @@ const SearchContainer = styled.form`
   align-items: center;
 `;
 
-const SearchInput = styled(motion.input)`
-  transform-origin: right center;
-  position: absolute;
-  margin-left: 10px;
-`;
-
-const SearchLogo = styled(motion.svg)`
+const SearchLogo = styled.svg`
   width: 40px;
   height: 40px;
-  position: absolute;
   path {
     stroke-width: 2;
   }
@@ -116,13 +112,12 @@ const Header = () => {
   const movieMatch = useMatch("/movies/:movieId");
   const TvMatch = useMatch("/tv");
   const UpcomingMatch = useMatch("/Upcoming");
-  const [search, setSearch] = useState(false);
-  const onClick = () => setSearch((prev) => !prev);
   const { scrollY } = useViewportScroll();
   const scrollAnimation = useAnimation();
-  const { register, handleSubmit } = useForm<IForm>();
+  const { register, handleSubmit, setValue } = useForm<IForm>();
   const onVaild = (data: IForm) => {
     navigate(`/search/?query=${data.query}`);
+    setValue("query", "");
   };
   useEffect(() => {
     scrollY.onChange(() => {
@@ -140,7 +135,6 @@ const Header = () => {
     movieMatch === null
   )
     return null;
-
   return (
     <Head variants={bodyVariants} initial="top" animate={scrollAnimation}>
       <Container>
@@ -185,17 +179,7 @@ const Header = () => {
         </Box>
         <BList>
           <SearchContainer onSubmit={handleSubmit(onVaild)}>
-            <SearchInput
-              {...register("query", { required: true, minLength: 2 })}
-              transition={{ type: "linear" }}
-              animate={{ scaleX: search ? 1 : 0 }}
-              placeholder="검색어를 입력해주세요"
-              type="text"
-            />
             <SearchLogo
-              animate={{ x: search ? -30 : 150 }}
-              transition={{ type: "liner" }}
-              onClick={onClick}
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               role="presentation"
@@ -206,8 +190,20 @@ const Header = () => {
                 stroke="currentColor"
               ></path>
             </SearchLogo>
+            <Input
+              style={{ color: "white" }}
+              {...register("query", { required: true, minLength: 2 })}
+              placeholder="검색어를 입력해주세요."
+              inputProps={ariaLabel}
+            />
           </SearchContainer>
-          <AssignmentIndIcon fontSize="large" />
+          <a
+            href="https://github.com/jiho3894"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <AssignmentIndIcon fontSize="large" />
+          </a>
         </BList>
       </Container>
     </Head>

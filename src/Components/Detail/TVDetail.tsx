@@ -9,7 +9,7 @@ import {
   IGetTVDetail,
   IGetTVTrailer,
 } from "../../Api/api";
-import { makeImagePath, makeTrailerPath } from "../../Api/utils";
+import { makeImagePath, makeTrailerPath, NothingPoster } from "../../Api/utils";
 import Loading from "../../Styles/Loading";
 import Back from "../../Styles/Back";
 import {
@@ -37,6 +37,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
+import Error from "../../Styles/Error";
 
 const TVContainer = styled.div`
   width: 100%;
@@ -72,16 +73,24 @@ const TVDetail = () => {
       {isLoading ? (
         <Loading />
       ) : data?.results[0] === undefined ? (
-        <Loading />
+        <Error />
       ) : (
         <Body>
           <Back />
-          <BackGroundImage bgimg={makeImagePath(info?.backdrop_path || "")} />
+          <BackGroundImage bgimg={
+              info?.backdrop_path === null
+                ? NothingPoster
+                : makeImagePath(info?.backdrop_path || "")
+            } />
           <Banner />
           <TVContainer>
             <Container>
               <PosterBox>
-                <PosterImage bgimg={makeImagePath(info?.poster_path || "")} />
+                <PosterImage bgimg={
+                    info?.poster_path === null
+                      ? NothingPoster
+                      : makeImagePath(info?.poster_path || "")
+                  } />
               </PosterBox>
               <DetailContainer>
                 <DetailBox>

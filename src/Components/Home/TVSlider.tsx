@@ -3,9 +3,10 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getTv, IGetTVResult } from "../../Api/api";
-import { makeImagePath } from "../../Api/utils";
+import { makeImagePath, NothingPoster } from "../../Api/utils";
 import Loading from "../../Styles/Loading";
 import { Info, infoVars, Span1 } from "./Home";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
 const UpcomingContainer = styled.div`
   width: 100%;
@@ -16,7 +17,9 @@ const UpcomingContainer = styled.div`
 `;
 
 const UpcomingTitle = styled.div`
-  width: 100%;
+  width: 40%;
+  display: flex;
+  align-items: center;
 `;
 
 const Container = styled.div`
@@ -55,11 +58,16 @@ const UpcomingBox = styled(motion.div)<{ bgimg: string }>`
 `;
 
 const TVSlider = () => {
-  const { isLoading, data } = useQuery<IGetTVResult>("TV", getTv);
+  const { isLoading, data } = useQuery<IGetTVResult>("TV", () => getTv(1));
   return (
     <>
       <UpcomingTitle>
-        <Span1>Charleyflix TV 프로그램</Span1>
+        <Link to="/tv">
+          <Span1>Charleyflix TV 프로그램</Span1>
+        </Link>
+        <Link to="/tv">
+          <ArrowCircleRightIcon fontSize="large" />
+        </Link>
       </UpcomingTitle>
       <UpcomingContainer>
         {isLoading ? (
@@ -67,11 +75,17 @@ const TVSlider = () => {
         ) : (
           <>
             <Container>
-              {data?.results.slice(2, 20).map((tv) => {
+              {data?.results.slice(2, 20).map((tv, index) => {
                 return (
-                  <Box whileHover={{ scale: 1.1 }}>
-                    <Link key={tv.id} to={`/tv/${tv.id}`}>
-                      <UpcomingBox bgimg={makeImagePath(tv.backdrop_path)}>
+                  <Box key={index} whileHover={{ scale: 1.1 }}>
+                    <Link to={`/tv/${tv.id}`}>
+                      <UpcomingBox
+                        bgimg={
+                          tv.backdrop_path === null
+                            ? NothingPoster
+                            : makeImagePath(tv.backdrop_path)
+                        }
+                      >
                         <Info variants={infoVars}>
                           <h4>{tv.original_name}</h4>
                         </Info>

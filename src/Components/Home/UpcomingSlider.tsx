@@ -3,9 +3,10 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getUpcoming, IGetMoviesResult } from "../../Api/api";
-import { makeImagePath } from "../../Api/utils";
+import { makeImagePath, NothingPoster } from "../../Api/utils";
 import Loading from "../../Styles/Loading";
 import { Info, infoVars, Span1 } from "./Home";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
 const UpcomingContainer = styled.div`
   width: 100%;
@@ -16,6 +17,8 @@ const UpcomingContainer = styled.div`
 `;
 
 const UpcomingTitle = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
 `;
 
@@ -56,14 +59,18 @@ const UpcomingBox = styled(motion.div)<{ bgimg: string }>`
 `;
 
 const UpcomingSlider = () => {
-  const { isLoading, data } = useQuery<IGetMoviesResult>(
-    "Upcoming",
-    getUpcoming
+  const { isLoading, data } = useQuery<IGetMoviesResult>("Upcoming", () =>
+    getUpcoming(1)
   );
   return (
     <>
       <UpcomingTitle>
-        <Span1>Charleyflix 상영 예정</Span1>
+        <Link to="/upcoming">
+          <Span1>Charleyflix 상영 예정</Span1>
+        </Link>
+        <Link to="/upcoming">
+          <ArrowCircleRightIcon fontSize="large" />
+        </Link>
       </UpcomingTitle>
       <UpcomingContainer>
         {isLoading ? (
@@ -71,12 +78,16 @@ const UpcomingSlider = () => {
         ) : (
           <>
             <Container>
-              {data?.results.slice(2, 20).map((upcoming) => {
+              {data?.results.slice(2, 20).map((upcoming, index) => {
                 return (
-                  <Box whileHover={{ scale: 1.1 }}>
-                    <Link key={upcoming.id} to={`/upcoming/${upcoming.id}`}>
+                  <Box key={index} whileHover={{ scale: 1.1 }}>
+                    <Link to={`/upcoming/${upcoming.id}`}>
                       <UpcomingBox
-                        bgimg={makeImagePath(upcoming.backdrop_path)}
+                        bgimg={
+                          upcoming.backdrop_path === null
+                            ? NothingPoster
+                            : makeImagePath(upcoming.backdrop_path)
+                        }
                       >
                         <Info variants={infoVars}>
                           <h4>{upcoming.title}</h4>

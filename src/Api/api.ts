@@ -13,6 +13,8 @@ interface IMovie {
   poster_path: string;
   title: string;
   overview: string;
+  release_date: string;
+  vote_average: string;
 }
 
 interface ITV {
@@ -21,6 +23,8 @@ interface ITV {
   original_name: string;
   overview: string;
   vote_average: number;
+  poster_path: string;
+  first_air_date: string;
 }
 
 interface ISearch {
@@ -28,8 +32,10 @@ interface ISearch {
   id: number;
   original_title: string;
   poster_path: string;
-  release_date: string;
+  first_air_date: string;
   vote_average: number;
+  media_type: string;
+  name: string;
 }
 
 interface IMovieTrailer {
@@ -106,62 +112,72 @@ export interface IGetTVTrailer {
 
 export interface IGetSearchResult {
   results: ISearch[];
+  total_results: number;
 }
 
 export interface IGetMovieSimilar {
   results: IMoiveSimilar[];
 }
 
-export const getMovies = () => {
-  return fetch(
-    `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-  ).then((response) => response.json());
-};
-
-export const getMoviesDetail = (movieId?: string) => {
-  return fetch(
-    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`
-  ).then((response) => response.json());
-};
-
-export const getMoviesTrailer = (movieId?: string) => {
-  return fetch(
-    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
-  ).then((response) => response.json());
-};
-
-export const getUpcoming = () => {
-  return fetch(
-    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
-  ).then((response) => response.json());
-};
-
-export const getTv = () => {
-  return fetch(
-    `${BASE_URL}/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
-  ).then((response) => response.json());
-};
-
-export const getTVDetail = (tvId?: string) => {
-  return fetch(`${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=en-US`).then(
-    (response) => response.json()
+export const getMovies = async () => {
+  const response = await fetch(
+    `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=1`
   );
+  return await response.json();
 };
 
-export const getTvTrailer = (tvId?: string) => {
-  return fetch(
-    `${BASE_URL}/tv/${tvId}/videos?api_key=${API_KEY}&language=en-US`
-  ).then((response) => response.json());
+export const getMoviesDetail = async (movieId?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=ko-KR`
+  );
+  return await response.json();
 };
 
-export const getSearch = (query?: string) => {
-  return fetch(
-    `${BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=true`
-  ).then((response) => response.json());
+export const getMoviesTrailer = async (movieId?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`
+  );
+  return await response.json();
 };
 
-export const getMovieSimilar = (movieId?: string) => {
-  return fetch(
-    `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&language=en-US&page=1`
-  ).then((response) => response.json());
+export const getUpcoming = async (number?: number) => {
+  const response = await fetch(
+    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&page=${number}`
+  );
+  return await response.json();
+};
+
+export const getTv = async (number?: number) => {
+  const response = await fetch(
+    `${BASE_URL}/tv/popular?api_key=${API_KEY}&page=${number}`
+  );
+  return await response.json();
+};
+
+export const getTVDetail = async (tvId?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/tv/${tvId}?api_key=${API_KEY}&language=ko-KR`
+  );
+  return await response.json();
+};
+
+export const getTvTrailer = async (tvId?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/tv/${tvId}/videos?api_key=${API_KEY}`
+  );
+  return await response.json();
+};
+
+export const getSearch = async (query?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}&page=1&include_adult=false`
+  );
+  return await response.json();
+};
+
+export const getMovieSimilar = async (movieId?: string) => {
+  const response = await fetch(
+    `${BASE_URL}/movie/${movieId}/similar?api_key=${API_KEY}&page=1`
+  );
+  return await response.json();
 };

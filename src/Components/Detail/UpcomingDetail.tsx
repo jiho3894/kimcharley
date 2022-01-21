@@ -10,12 +10,13 @@ import {
   IGetMoviesDetail,
   IGetMoviesTrailer,
 } from "../../Api/api";
-import { makeImagePath, makeTrailerPath } from "../../Api/utils";
+import { makeImagePath, makeTrailerPath, NothingPoster } from "../../Api/utils";
 import Loading from "../../Styles/Loading";
 import Back from "../../Styles/Back";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import SendIcon from "@mui/icons-material/Send";
+import Error from "../../Styles/Error";
 
 export const Body = styled.div`
   width: 100%;
@@ -229,16 +230,28 @@ const UpcmoingDetail = () => {
       {isLoading ? (
         <Loading />
       ) : data?.results[0] === undefined ? (
-        <Loading />
+        <Error />
       ) : (
         <Body>
           <Back />
-          <BackGroundImage bgimg={makeImagePath(info?.backdrop_path || "")} />
+          <BackGroundImage
+            bgimg={
+              info?.backdrop_path === null
+                ? NothingPoster
+                : makeImagePath(info?.backdrop_path || "")
+            }
+          />
           <Banner />
           <UpcomingContainer>
             <Container>
               <PosterBox>
-                <PosterImage bgimg={makeImagePath(info?.poster_path || "")} />
+                <PosterImage
+                  bgimg={
+                    info?.poster_path === null
+                      ? NothingPoster
+                      : makeImagePath(info?.poster_path || "")
+                  }
+                />
               </PosterBox>
               <DetailContainer>
                 <DetailBox>

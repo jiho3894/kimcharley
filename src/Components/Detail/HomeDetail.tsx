@@ -12,7 +12,7 @@ import {
   IGetMovieSimilar,
   IGetMoviesTrailer,
 } from "../../Api/api";
-import { makeImagePath, makeTrailerPath } from "../../Api/utils";
+import { makeImagePath, makeTrailerPath, NothingPoster } from "../../Api/utils";
 import Stack from "@mui/material/Stack";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Rating from "@mui/material/Rating";
@@ -20,6 +20,8 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import Loading from "../../Styles/Loading";
+import { Button } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 
 const Container = styled(motion.div)`
   width: 100%;
@@ -327,7 +329,11 @@ const HomeDetail = () => {
                   </BannerFooterBox>
                 </Banner>
               </DetailPlayContainer>
-              <DetailBanner bgimg={makeImagePath(info?.backdrop_path || "")} />
+              <DetailBanner bgimg={
+                    info?.backdrop_path === null
+                      ? NothingPoster
+                      : makeImagePath(info?.backdrop_path || "")
+                  } />
               <OverviewContainer>
                 <TitleContainer>
                   <Title>{info?.original_title}</Title>
@@ -354,6 +360,17 @@ const HomeDetail = () => {
                   <span style={{ color: "red" }}>
                     &nbsp;{info?.adult ? "/ 청소년 관람불가" : ""}
                   </span>
+                  <a href={info?.homepage} target="_blank" rel="noreferrer">
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        endIcon={<SendIcon />}
+                      >
+                        HomePage
+                      </Button>
+                    </Stack>
+                  </a>
                 </ReleaseContainer>
                 <Explanation>
                   <OverviewBox>
@@ -364,19 +381,17 @@ const HomeDetail = () => {
                   <Wrapper>
                     <WrapperColor>
                       <GenresContainer>
-                        {info?.genres.slice(0, 3).map((genres) => {
-                          return (
-                            <span key={genres.name}>&nbsp;{genres.name} /</span>
-                          );
+                        {info?.genres.slice(0, 3).map((genres, index) => {
+                          return <span key={index}>&nbsp;{genres.name} /</span>;
                         })}
                       </GenresContainer>
                       <Companies>
                         {info?.production_companies
                           .slice(0, 2)
-                          .map((companies) => {
+                          .map((companies, index) => {
                             return (
                               <LogoPath
-                                key={companies.logo_path}
+                                key={index}
                                 bgimg={makeImagePath(companies.logo_path || "")}
                               ></LogoPath>
                             );
@@ -390,10 +405,10 @@ const HomeDetail = () => {
                     <span>비슷한 콘텐츠</span>
                   </SemiHeader>
                   <SemiBox>
-                    {similar?.results.slice(0, 6).map((movie) => {
+                    {similar?.results.slice(0, 6).map((movie, index) => {
                       return (
                         <Similar
-                          key={movie.original_title}
+                          key={index}
                           whileHover={{ scale: 1.1 }}
                           bgimg={makeImagePath(movie.backdrop_path || "")}
                         />

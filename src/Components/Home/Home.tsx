@@ -11,10 +11,10 @@ import {
   IGetMoviesResult,
   IGetMoviesTrailer,
 } from "../../Api/api";
-import { makeImagePath, makeTrailerPath } from "../../Api/utils";
+import { makeImagePath, makeTrailerPath, NothingPoster } from "../../Api/utils";
 import { isSoundAtom, SoundEnums } from "../../Recoil/Atom";
 import Loading from "../../Styles/Loading";
-import HometoDetail from "./HomeDetail";
+import HometoDetail from "../Detail/HomeDetail";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import UpcomingSlider from "./UpcomingSlider";
@@ -67,7 +67,8 @@ export const Span1 = styled(motion.span)`
   color: white;
   z-index: 30;
   font-size: 30px;
-  margin-left: 50px;
+  margin-left: 40px;
+  margin-right: 20px;
   font-weight: 600;
 `;
 
@@ -112,7 +113,6 @@ export const Decrease = styled(motion.div)`
 export const Slider = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
 `;
@@ -253,7 +253,7 @@ const Home = () => {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [isBack, setIsBack] = useState(false);
-  const [pause, setPause] = useState(false);
+  const [isVolum, setIsVolum] = useState(false);
   const [isSound, setIsSound] = useRecoilState<SoundEnums>(isSoundAtom);
   const { OFF, ON } = SoundEnums;
   const handleChangeSound = useCallback((): void => {
@@ -289,11 +289,11 @@ const Home = () => {
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onClickBox = (movieId: number) => {
     navigate(`/movies/${movieId}`);
-    setPause(true);
+    setIsVolum(true);
   };
   const onClickOverlay = () => {
     navigate("/movies");
-    setPause(false);
+    setIsVolum(false);
   };
   const clickMovie =
     movieMatch?.params.movieId &&
@@ -308,10 +308,10 @@ const Home = () => {
         <>
           <PlayContainer>
             <ReactPlayer
-              url={makeTrailerPath(trailer?.results[0].key)}
-              volume={0.3}
+              url={makeTrailerPath(trailer?.results[0].key || "")}
+              volume={isVolum ? 0 : 0.3}
               controls={false}
-              playing={pause ? false : true}
+              playing={true}
               muted={isSound === "0" ? true : false}
               loop={true}
               width="200vw"
@@ -351,17 +351,21 @@ const Home = () => {
                 >
                   {info?.results
                     ?.slice(index * sliceF + 1, index * sliceF + sliceF + 1)
-                    .map((movie) => {
+                    .map((movie, index) => {
                       return (
                         <Box
                           layoutId={movie.id + ""}
-                          key={movie.id}
                           onClick={() => onClickBox(movie.id)}
+                          key={index}
                           whileHover="hover"
                           initial="normal"
                           variants={boxVars}
                           transition={{ type: "tween" }}
-                          bgimg={makeImagePath(movie.backdrop_path || "")}
+                          bgimg={
+                            movie.backdrop_path === null
+                              ? NothingPoster
+                              : makeImagePath(movie.backdrop_path)
+                          }
                         >
                           <Info variants={infoVars}>
                             <h4>{movie.title}</h4>
