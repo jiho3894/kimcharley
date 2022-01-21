@@ -329,11 +329,13 @@ const HomeDetail = () => {
                   </BannerFooterBox>
                 </Banner>
               </DetailPlayContainer>
-              <DetailBanner bgimg={
-                    info?.backdrop_path === null
-                      ? NothingPoster
-                      : makeImagePath(info?.backdrop_path || "")
-                  } />
+              <DetailBanner
+                bgimg={
+                  info?.backdrop_path === null
+                    ? NothingPoster
+                    : makeImagePath(info?.backdrop_path || "")
+                }
+              />
               <OverviewContainer>
                 <TitleContainer>
                   <Title>{info?.original_title}</Title>

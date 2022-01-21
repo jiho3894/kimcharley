@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../../Api/api";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Loading from "../../Styles/Loading";
+import { Helmet } from "react-helmet";
 
 const Body = styled.div`
   min-width: 1024px;
@@ -208,6 +209,9 @@ const Customer = () => {
         <Loading />
       ) : (
         <Body>
+          <Helmet>
+            <title>Charleyflix</title>
+          </Helmet>
           <MainContainer>
             <MainOpacity>
               <MainHeader>

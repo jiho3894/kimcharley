@@ -38,6 +38,7 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import Error from "../../Styles/Error";
+import { Helmet } from "react-helmet";
 
 const TVContainer = styled.div`
   width: 100%;
@@ -70,6 +71,9 @@ const TVDetail = () => {
   const volumClick = () => setVolum((prev) => !prev);
   return (
     <>
+      <Helmet>
+        <title>{info?.original_name}</title>
+      </Helmet>
       {isLoading ? (
         <Loading />
       ) : data?.results[0] === undefined ? (
@@ -77,20 +81,24 @@ const TVDetail = () => {
       ) : (
         <Body>
           <Back />
-          <BackGroundImage bgimg={
+          <BackGroundImage
+            bgimg={
               info?.backdrop_path === null
                 ? NothingPoster
                 : makeImagePath(info?.backdrop_path || "")
-            } />
+            }
+          />
           <Banner />
           <TVContainer>
             <Container>
               <PosterBox>
-                <PosterImage bgimg={
+                <PosterImage
+                  bgimg={
                     info?.poster_path === null
                       ? NothingPoster
                       : makeImagePath(info?.poster_path || "")
-                  } />
+                  }
+                />
               </PosterBox>
               <DetailContainer>
                 <DetailBox>

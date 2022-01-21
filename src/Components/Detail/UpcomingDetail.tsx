@@ -17,6 +17,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import SendIcon from "@mui/icons-material/Send";
 import Error from "../../Styles/Error";
+import { Helmet } from "react-helmet";
 
 export const Body = styled.div`
   width: 100%;
@@ -227,6 +228,9 @@ const UpcmoingDetail = () => {
   const volumClick = () => setVolum((prev) => !prev);
   return (
     <>
+      <Helmet>
+        <title>{info?.original_title}</title>
+      </Helmet>
       {isLoading ? (
         <Loading />
       ) : data?.results[0] === undefined ? (
