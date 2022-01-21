@@ -6,10 +6,10 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
-  min-width: 1400px;
+  min-width: 1024px;
   max-height: 100vh;
   word-break: keep-all;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     display: none;
   }
 `;
@@ -106,7 +106,7 @@ const SectionContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   h1 {
-    font-size: 68px;
+    font-size: 60px;
     font-weight: 600;
     text-align: center;
   }
@@ -164,7 +164,7 @@ const TextContainer = styled.div`
   align-items: center;
   justify-content: center;
   h1 {
-    font-size: 68px;
+    font-size: 60px;
     font-weight: 600;
     padding-bottom: 20px;
   }
