@@ -19,6 +19,8 @@ const MainContainer = styled.div`
   width: 100%;
   height: 100%;
   background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const MainOpacity = styled.div`
@@ -193,9 +195,9 @@ const VideoWrapper = styled.div`
   width: 100%;
   height: 100%;
   max-width: 73%;
-  max-height: 54%;
+  max-height: 30%;
   position: absolute;
-  top: 46%;
+  top: 34%;
   left: 48%;
   transform: translate(-50%, -50%);
 `;
