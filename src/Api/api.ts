@@ -1,4 +1,4 @@
-const API_KEY = "Your Api Key";
+const API_KEY = "YourApiKey";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export interface RouterID {
