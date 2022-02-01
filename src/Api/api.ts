@@ -80,7 +80,7 @@ export interface IGetMoviesDetail {
 }
 
 export interface IGetMoviesTrailer {
-  id: string;
+  id : number;
   results: IMovieTrailer[];
 }
 

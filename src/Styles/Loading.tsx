@@ -22,7 +22,7 @@ const Loading = () => {
         <Box>
           <CircularProgress />
         </Box>
-        미완성
+        Loading...
       </Container>
     </>
   );

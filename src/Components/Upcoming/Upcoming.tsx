@@ -65,25 +65,6 @@ const Date = styled.div``;
 
 const Average = styled.div``;
 
-const container = {
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.1,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
-
 const Upcoming = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("Upcoming", () =>
     getUpcoming(2)
@@ -94,12 +75,11 @@ const Upcoming = () => {
         <Loading />
       ) : (
         <Body>
-          <Container variants={container} initial="hidden" animate="visible">
+          <Container>
             {data?.results.map((upcoming, index) => {
               return (
                 <Link key={index} to={`/upcoming/${upcoming.id}`}>
                   <Box
-                    variants={item}
                     bgimg={
                       upcoming.backdrop_path === null
                         ? NothingPoster

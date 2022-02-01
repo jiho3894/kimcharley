@@ -65,23 +65,6 @@ const Date = styled.div``;
 
 const Average = styled.div``;
 
-const container = {
-  visible: {
-    transition: {
-      delayChildren: 0.1,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
-
 const Tv = () => {
   const { isLoading, data } = useQuery<IGetTVResult>("TV", () => getTv(2));
   return (
@@ -90,12 +73,11 @@ const Tv = () => {
         <Loading />
       ) : (
         <Body>
-          <Container variants={container} initial="hidden" animate="visible">
+          <Container>
             {data?.results.map((tv) => {
               return (
                 <Link key={tv.id} to={`/tv/${tv.id}`}>
                   <Box
-                    variants={item}
                     bgimg={
                       tv.backdrop_path === null
                         ? NothingPoster
