@@ -1,4 +1,6 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=Charleyflix&fontAlign=58&fontAlignY=30&color=gradient)
+# CRA가 싫어진 가장 큰 이유 제공 프로젝트 감사합니다 Next.js로 전 떠납니다
+
 ### 넥플릭스 클론 코딩 (2022.01.10 ~ 2022.01.23)
 - 🏠 [HomePage](https://jiho3894.github.io/kimcharley/)
 
