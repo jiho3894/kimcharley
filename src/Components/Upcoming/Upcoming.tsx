@@ -69,6 +69,7 @@ const Upcoming = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("Upcoming", () =>
     getUpcoming(2)
   );
+
   return (
     <>
       {isLoading ? (
