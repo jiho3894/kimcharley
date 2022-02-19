@@ -9,7 +9,6 @@ import Input from "@mui/material/Input";
 const ariaLabel = { "aria-label": "description" };
 
 const Head = styled(motion.header)`
-  min-width: 1024px;
   width: 100%;
   height: 86px;
   display: flex;

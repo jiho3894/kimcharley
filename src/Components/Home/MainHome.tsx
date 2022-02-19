@@ -11,7 +11,7 @@ const Body = styled.div`
   max-height: 100vh;
   word-break: keep-all;
   @media screen and (max-width: 1023px) {
-    display: none;
+    
   }
 `;
 

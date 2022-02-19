@@ -7,12 +7,10 @@ import MainHome from "../Components/Home/MainHome";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
 import TVDetail from "../Components/Detail/TVDetail";
-import Mobile from "../Styles/Mobile";
 
 const Router = () => {
   return (
     <HashRouter>
-      <Mobile />
       <Header />
       <Routes>
         <Route path="/" element={<MainHome />} />

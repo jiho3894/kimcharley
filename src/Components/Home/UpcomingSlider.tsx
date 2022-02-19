@@ -26,7 +26,7 @@ const Container = styled.div`
   width: 98%;
   height: 400px;
   display: grid;
-  grid-template-columns: repeat(18, 300px);
+  grid-template-columns: repeat(20, 300px);
   align-items: center;
   margin-left: 2%;
   gap: 3px;
@@ -78,7 +78,7 @@ const UpcomingSlider = () => {
         ) : (
           <>
             <Container>
-              {data?.results.slice(2, 20).map((upcoming, index) => {
+              {data?.results.map((upcoming, index) => {
                 return (
                   <Box key={index} whileHover={{ scale: 1.1 }}>
                     <Link to={`/upcoming/${upcoming.id}`}>

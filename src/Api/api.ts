@@ -1,4 +1,4 @@
-const API_KEY = "YourApiKey";
+const API_KEY = "9594c9ccbbcc42235a2072ad7d3699ae";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export interface RouterID {
@@ -80,7 +80,7 @@ export interface IGetMoviesDetail {
 }
 
 export interface IGetMoviesTrailer {
-  id : number;
+  id: number;
   results: IMovieTrailer[];
 }
 
