@@ -10,9 +10,6 @@ const Body = styled.div`
   min-width: 1024px;
   max-height: 100vh;
   word-break: keep-all;
-  @media screen and (max-width: 1023px) {
-    
-  }
 `;
 
 const MainContainer = styled.div`
