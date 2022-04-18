@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Input from "@mui/material/Input";
+import { useRecoilValue } from "recoil";
+import { gitID } from "../Recoil/Atom";
 
 const ariaLabel = { "aria-label": "description" };
 
@@ -61,10 +62,27 @@ const SLink = styled(Link)`
   align-items: center;
 `;
 
+const GLink = styled.div`
+  padding-right: 20px;
+  width: 40px;
+  height: 40px;
+`;
+
+const Img = styled.img`
+  width: 40px;
+  height: 40px;
+`;
+
 const BList = styled.div`
-  width: 350px;
+  width: 600px;
   display: flex;
   align-items: center;
+`;
+
+const NickBox = styled.div`
+  width: 100%;
+  text-align: right;
+  font-weight: 600;
 `;
 
 const Circle = styled(motion.span)`
@@ -77,7 +95,7 @@ const Circle = styled(motion.span)`
 `;
 
 const SearchContainer = styled.form`
-  width: 80%;
+  width: 100%;
   height: 60px;
   display: flex;
   align-items: center;
@@ -114,6 +132,8 @@ const Header = () => {
   const { scrollY } = useViewportScroll();
   const scrollAnimation = useAnimation();
   const { register, handleSubmit, setValue } = useForm<IForm>();
+  const user_ID = useRecoilValue(gitID);
+  console.log(user_ID);
   const onVaild = (data: IForm) => {
     navigate(`/search/?query=${data.query}`);
     setValue("query", "");
@@ -174,6 +194,15 @@ const Header = () => {
                 <Circle layoutId="circle" transition={{ duration: 0.15 }} />
               )}
             </SLink>
+            <GLink>
+              <a href="https://github.com/jiho3894">
+                <Img
+                  className="w-1 h-1"
+                  alt=""
+                  src="https://avatars.githubusercontent.com/u/79081800?v=4"
+                />
+              </a>
+            </GLink>
           </AList>
         </Box>
         <BList>
@@ -194,15 +223,12 @@ const Header = () => {
               {...register("query", { required: true, minLength: 2 })}
               placeholder="검색어를 입력해주세요."
               inputProps={ariaLabel}
+              autoFocus
             />
           </SearchContainer>
-          <a
-            href="https://github.com/jiho3894"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <AssignmentIndIcon fontSize="large" />
-          </a>
+          <NickBox>
+            <span>{user_ID}님</span>
+          </NickBox>
         </BList>
       </Container>
     </Head>

@@ -7,6 +7,7 @@ import MainHome from "../Components/Home/MainHome";
 import Upcoming from "../Components/Upcoming/Upcoming";
 import UpcomingDetail from "../Components/Detail/UpcomingDetail";
 import TVDetail from "../Components/Detail/TVDetail";
+import Login from "../Components/Home/Login";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<MainHome />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/movies" element={<Home />}>
           <Route path=":movieId" element={<Home />} />
         </Route>

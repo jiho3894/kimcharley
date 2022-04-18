@@ -5,6 +5,8 @@ import { getMovies, IGetMoviesResult } from "../../Api/api";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Loading from "../../Styles/Loading";
 import { Helmet } from "react-helmet";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { gitID } from "../../Recoil/Atom";
 
 const Body = styled.div`
   min-width: 1024px;
@@ -12,7 +14,7 @@ const Body = styled.div`
   word-break: keep-all;
 `;
 
-const MainContainer = styled.div`
+export const MainContainer = styled.div`
   width: 100%;
   height: 100%;
   background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9737377e-a430-4d13-ad6c-874c54837c49/945eec79-6856-4d95-b4c6-83ff5292f33d/KR-ko-20220111-popsignuptwoweeks-perspective_alpha_website_large.jpg");
@@ -20,7 +22,7 @@ const MainContainer = styled.div`
   background-size: cover;
 `;
 
-const MainOpacity = styled.div`
+export const MainOpacity = styled.div`
   background: linear-gradient(
     rgba(0, 0, 0, 0.8),
     rgba(0, 0, 0, 0.3),
@@ -201,7 +203,14 @@ const VideoWrapper = styled.div`
 
 const Customer = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("start", getMovies);
+  const is_login = useRecoilValue(gitID);
+  const loginID = useSetRecoilState(gitID);
+  console.log(is_login);
   localStorage.setItem("movieId", String(data?.results[0].id));
+  const logout = () => {
+    alert("안녕히가세요");
+    loginID("");
+  };
   return (
     <>
       {isLoading ? (
@@ -222,13 +231,23 @@ const Customer = () => {
                       </a>
                     </span>
                   </LogoBox>
-                  <LoginBtnBox>
-                    <LoginBox>
-                      <a href="https://www.netflix.com/kr/login">
-                        <button>로그인</button>
-                      </a>
-                    </LoginBox>
-                  </LoginBtnBox>
+                  {is_login === "" ? (
+                    <LoginBtnBox>
+                      <LoginBox>
+                        <Link to="login">
+                          <button>로그인</button>
+                        </Link>
+                      </LoginBox>
+                    </LoginBtnBox>
+                  ) : (
+                    <LoginBtnBox>
+                      <LoginBox>
+                        <Link to="/" onClick={logout}>
+                          <button>로그아웃</button>
+                        </Link>
+                      </LoginBox>
+                    </LoginBtnBox>
+                  )}
                 </HeaderWrapper>
               </MainHeader>
               <SectionWrapper>

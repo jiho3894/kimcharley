@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getTv, IGetTVResult } from "../../Api/api";
+import { getTv, IGetTVResult, ITV } from "../../Api/api";
 import { makeImagePath, NothingPoster } from "../../Api/utils";
+import { getTvImg } from "../../Recoil/Atom";
 import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
@@ -67,6 +70,11 @@ const Average = styled.div``;
 
 const Tv = () => {
   const { isLoading, data } = useQuery<IGetTVResult>("TV", () => getTv(2));
+  const dataRecoil = useSetRecoilState(getTvImg);
+  useEffect(() => {
+    dataRecoil(data?.results);
+  }, [data, dataRecoil]);
+  const post = useRecoilValue(getTvImg);
   return (
     <>
       {isLoading ? (
@@ -74,7 +82,7 @@ const Tv = () => {
       ) : (
         <Body>
           <Container>
-            {data?.results.map((tv) => {
+            {post?.map((tv: ITV) => {
               return (
                 <Link key={tv.id} to={`/tv/${tv.id}`}>
                   <Box

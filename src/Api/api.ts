@@ -7,7 +7,7 @@ export interface RouterID {
   };
 }
 
-interface IMovie {
+export interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
@@ -17,7 +17,7 @@ interface IMovie {
   vote_average: string;
 }
 
-interface ITV {
+export interface ITV {
   id: number;
   backdrop_path: string;
   original_name: string;

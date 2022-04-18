@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getUpcoming, IGetMoviesResult } from "../../Api/api";
+import { getUpcoming, IGetMoviesResult, IMovie } from "../../Api/api";
 import { makeImagePath, NothingPoster } from "../../Api/utils";
+import { getUpcomingImg } from "../../Recoil/Atom";
 import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
@@ -69,7 +72,11 @@ const Upcoming = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("Upcoming", () =>
     getUpcoming(2)
   );
-
+  const dataRecoil = useSetRecoilState(getUpcomingImg);
+  useEffect(() => {
+    dataRecoil(data?.results);
+  }, [data, dataRecoil]);
+  const post = useRecoilValue(getUpcomingImg);
   return (
     <>
       {isLoading ? (
@@ -77,9 +84,9 @@ const Upcoming = () => {
       ) : (
         <Body>
           <Container>
-            {data?.results.map((upcoming, index) => {
+            {post?.map((upcoming: IMovie) => {
               return (
-                <Link key={index} to={`/upcoming/${upcoming.id}`}>
+                <Link key={upcoming.id} to={`/upcoming/${upcoming.id}`}>
                   <Box
                     bgimg={
                       upcoming.backdrop_path === null
