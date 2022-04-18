@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/kimcharley/static/js/main.c2eae557.js",
+    "main.js": "/kimcharley/static/js/main.d425b1e0.js",
     "index.html": "/kimcharley/index.html",
-    "main.c2eae557.js.map": "/kimcharley/static/js/main.c2eae557.js.map"
+    "main.d425b1e0.js.map": "/kimcharley/static/js/main.d425b1e0.js.map"
   },
   "entrypoints": [
-    "static/js/main.c2eae557.js"
+    "static/js/main.d425b1e0.js"
   ]
 }
