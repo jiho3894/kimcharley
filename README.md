@@ -1,7 +1,7 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=Charleyflix&fontAlign=58&fontAlignY=30&color=gradient)
 
 ### 넥플릭스 클론 코딩 (2022.01.10 ~ 2022.01.23)
-- 🏠 [HomePage](https://jiho3894.github.io/kimcharley/)
+# 🏠 [HomePage](https://jiho3894.github.io/kimcharley/)
 
 <img src="https://user-images.githubusercontent.com/79081800/150671890-2d8f2903-a043-439a-80f3-2747f7557e75.png" />
 <div>
