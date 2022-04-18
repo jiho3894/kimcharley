@@ -234,7 +234,7 @@ const Customer = () => {
                   {is_login === "" ? (
                     <LoginBtnBox>
                       <LoginBox>
-                        <Link to="login">
+                        <Link to="/login">
                           <button>로그인</button>
                         </Link>
                       </LoginBox>

@@ -120,7 +120,7 @@ const Login = () => {
     }
     alert("로그인 성공");
     setID(data.NickName);
-    Navigate("/");
+    Navigate(-1);
   };
   return (
     <Body>

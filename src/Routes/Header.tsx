@@ -109,6 +109,32 @@ const SearchLogo = styled.svg`
   }
 `;
 
+const LoginBtnBox = styled.div`
+  width: 5rem;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoginBox = styled.div`
+  width: 120px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 0;
+    background-color: red;
+    color: white;
+  }
+`;
+
 const bodyVariants = {
   top: {
     backgroundColor: "rgba(0, 0, 0, 1)",
@@ -226,9 +252,19 @@ const Header = () => {
               autoFocus
             />
           </SearchContainer>
-          <NickBox>
-            <span>{user_ID}님</span>
-          </NickBox>
+          {user_ID ? (
+            <NickBox>
+              <span>{user_ID}님</span>
+            </NickBox>
+          ) : (
+            <LoginBtnBox>
+              <LoginBox>
+                <Link to="/login">
+                  <button>로그인</button>
+                </Link>
+              </LoginBox>
+            </LoginBtnBox>
+          )}
         </BList>
       </Container>
     </Head>
