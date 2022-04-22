@@ -1,13 +1,17 @@
+import { lazy } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import Home from "../Components/Home/Home";
-import Search from "../Components/Search/Search";
-import TV from "../Components/Tv/Tv";
-import Header from "./Header";
-import MainHome from "../Components/Home/MainHome";
-import Upcoming from "../Components/Upcoming/Upcoming";
-import UpcomingDetail from "../Components/Detail/UpcomingDetail";
-import TVDetail from "../Components/Detail/TVDetail";
-import Login from "../Components/Home/Login";
+
+const Header = lazy(() => import("./Header"));
+const Home = lazy(() => import("../Components/Home/Home"));
+const Search = lazy(() => import("../Components/Search/Search"));
+const TV = lazy(() => import("../Components/Tv/Tv"));
+const MainHome = lazy(() => import("../Components/Home/MainHome"));
+const Upcoming = lazy(() => import("../Components/Upcoming/Upcoming"));
+const UpcomingDetail = lazy(
+  () => import("../Components/Detail/UpcomingDetail")
+);
+const TVDetail = lazy(() => import("../Components/Detail/TVDetail"));
+const Login = lazy(() => import("../Components/Home/Login"));
 
 const Router = () => {
   return (

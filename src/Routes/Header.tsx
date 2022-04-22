@@ -159,7 +159,6 @@ const Header = () => {
   const scrollAnimation = useAnimation();
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const user_ID = useRecoilValue(gitID);
-  console.log(user_ID);
   const onVaild = (data: IForm) => {
     navigate(`/search/?query=${data.query}`);
     setValue("query", "");

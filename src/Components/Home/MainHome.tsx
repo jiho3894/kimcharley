@@ -205,7 +205,6 @@ const Customer = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("start", getMovies);
   const is_login = useRecoilValue(gitID);
   const loginID = useSetRecoilState(gitID);
-  console.log(is_login);
   localStorage.setItem("movieId", String(data?.results[0].id));
   const logout = () => {
     alert("안녕히가세요");
