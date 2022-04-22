@@ -1,12 +1,9 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { getUpcoming, IGetMoviesResult, IMovie } from "../../Api/api";
 import { makeImagePath, NothingPoster } from "../../Api/utils";
-import { getUpcomingImg } from "../../Recoil/Atom";
 import Loading from "../../Styles/Loading";
 
 const Body = styled.div`
@@ -68,26 +65,42 @@ const Date = styled.div``;
 
 const Average = styled.div``;
 
+const container = {
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
+
 const Upcoming = () => {
   const { isLoading, data } = useQuery<IGetMoviesResult>("Upcoming", () =>
     getUpcoming(2)
   );
-  const dataRecoil = useSetRecoilState(getUpcomingImg);
-  useEffect(() => {
-    dataRecoil(data?.results);
-  }, [data, dataRecoil]);
-  const post = useRecoilValue(getUpcomingImg);
+  console.log(data);
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
         <Body>
-          <Container>
-            {post?.map((upcoming: IMovie) => {
+          <Container variants={container} initial="hidden" animate="visible">
+            {data?.results?.map((upcoming: IMovie) => {
               return (
                 <Link key={upcoming.id} to={`/upcoming/${upcoming.id}`}>
                   <Box
+                    variants={item}
                     bgimg={
                       upcoming.backdrop_path === null
                         ? NothingPoster

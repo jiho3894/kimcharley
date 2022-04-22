@@ -27,15 +27,3 @@ export const gitID = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
-
-export const getUpcomingImg = atom({
-  key: "UpcomingImg",
-  default: [],
-  effects_UNSTABLE: [persistAtom],
-});
-
-export const getTvImg = atom({
-  key: "TvImg",
-  default: [],
-  effects_UNSTABLE: [persistAtom],
-});

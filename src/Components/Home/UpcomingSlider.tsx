@@ -80,7 +80,7 @@ const UpcomingSlider = () => {
             <Container>
               {data?.results.map((upcoming, index) => {
                 return (
-                  <Box key={index} whileHover={{ scale: 1.1 }}>
+                  <Box key={index} whileHover={{ scale: 1.05 }}>
                     <Link to={`/upcoming/${upcoming.id}`}>
                       <UpcomingBox
                         bgimg={

@@ -77,7 +77,7 @@ const TVSlider = () => {
             <Container>
               {data?.results.slice(2, 20).map((tv, index) => {
                 return (
-                  <Box key={index} whileHover={{ scale: 1.1 }}>
+                  <Box key={index} whileHover={{ scale: 1.05 }}>
                     <Link to={`/tv/${tv.id}`}>
                       <UpcomingBox
                         bgimg={
